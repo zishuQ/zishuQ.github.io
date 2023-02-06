@@ -1,335 +1,210 @@
-<!--
- * @Author: CSU_XZY
- * @Date: 2020-10-13 22:06:51
- * @LastEditors: CSU_XZY
- * @LastEditTime: 2020-10-18 17:08:54
- * @FilePath: \第二天\贪吃蛇\snake.html
- * @Description: just to play
--->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>eatSnake</title>
-<head>
-	<style type="text/css">
-		*{
-			margin:0;
-			padding:0;
-			border: 0px;
-		}
-		body{
-			background: #444;
-		}
-		table{
-			border-collapse:collapse;
-			overflow: hidden;
-			border:1px solid #ddd;
-			margin:10px auto 10px auto;
-		}
-		td{
-			display: table-cell;
-			width:20px;
-			height:20px;
-			background: #fff;
-			border:1px #eeeeee solid;
-		}
-		.snake{
-			background: #3388ee;
-		}
-		.notsnake{
-			background: #fff;
-		}
-		.food{
-			background: #33aa33;
-		}
-		.snake_head{
-			background: #dd4444;
-		}
-		.notice{
-			width:450px;
-			text-align: center;
-			margin:50px auto;
-			color:#fff;
-			font-size: 14px;
-		}
-	</style>
+  <title>扫雷</title>
+  <style>
+    #bar {
+      text-align: center;
+      margin-bottom:20px;
+    }
+
+    .bar {
+      height: 25px;
+      width: 150px;
+      line-height: 25px;
+      display: inline-block;
+      border: solid 1px #000;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+
+    #grid {
+      margin: auto;
+    }
+
+    .blocks {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      display: block;
+      text-align: center;
+      border: solid 1px #000;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .blocks:hover {
+      background: #0af;
+    }
+  </style>
 </head>
-<body>
-<p class="notice">提示：空格键控制开始/ 暂停，方向键控制蛇的移动方向，F5刷新</p>
-<script>
-window.onload = function(){
-    var snake = function(width,height,snakeId,speed){
-        this.width = width || 10;
-        this.height = height || 10;
-        this.snakeId = snakeId || "snake";
-        this.goX = 0;
-        this.goY = 0;
-        this.speed = this.oldSpeed = speed || 10;
-        this.Grid = []; //存放td的二维数组
-        this.snakeGrid = []; //存放蛇的数组
-        this.foodGrid = [];
-        this.snakeTimer = null;
-        this.derectkey = 39;
-        this.stop = true;
-        this.init();
-        document.getElementById("myAudio").play();
-        box.style.animationPlayState = 'running'
-    }
 
-    snake.prototype = {
-        //创建二维数组
-        multiArray : function(m , n)
-        {
-            var array = new Array(m);   //长
-            for(let i = 0; i < m; i++)
-            {
-                array[i] = new Array(n);  //宽
-            }
-            return array;
-        },
-        //函数修正this
-        bind : function(fn,context)
-        {
-            return function(){
-				return fn.apply(context,arguments);
-			}
-        },
-        //移动的主函数
-        move:function(){
-			var _this = this;
-			if(_this.snakeTimer){clearInterval(_this.snakeTimer);}
-			_this.snakeTimer = setInterval(_this.bind(_this.main,_this),Math.floor(3000/this.speed));
-        },
-        //重来
-        reset()
-        {
-            this.goX = 0;
-            this.goY = 0;
-            this.speed = this.oldSpeed;
-            this.derectkey = 39;
-            this.stop = true;
-            this.init();
-        },
-        //确定键盘事件
-        keyDown : function(e)
-        {  
-            var e = e || window.event;
-            var keycode = e?e.keyCode:0;
-            if(keycode == 116 )
-            window.location.reload();
-            if(keycode == 32)
-            {
-                if(this.stop)
-                {
-                    this.move();
-                    this.stop = false;
-                }
-                else{
-                    if(this.snakeTimer)
-                    clearInterval(this.snakeTimer);
-                    this.stop = true;
-                }
-            }
-            if(keycode>=37 && keycode <= 40)
-                {
-                    if(!this.stop)
-                    this.derectkey = keycode;
-                }
-            return false;
-        },
-        //创建地图
-        creatMap : function()
-        {
-            var table = document.createElement("table");
-            var tbody = document.createElement("tbody");
-            for(let i = 0; i < this.width; i++)
-            {
-                var tr = document.createElement("tr");
-                for(let j = 0; j < this.height; j++)
-                {
-                    var td = document.createElement("td");
-                    this.Grid[i][j] = tr.appendChild(td);
-                }
-                tbody.appendChild(tr);
-            }
-            table.appendChild(tbody);
-            table.id = this.snakeId;
-            document.body.appendChild(table);
-        },
-        //产生随机点
-        randomPoint : function(initX,initY,endX,endY)
-        {
-            var p = []; //用来存放产生的随机点的数组
-            var initX = initX || 0;
-            var initY = initY || 0;
-            var endX = endX || this.width;
-            var endY = endY || this.height;
-            p[0] = Math.floor(Math.random()*(endX - initX)) + Math.floor(initX);
-            p[1] = Math.floor(Math.random()*(endY - initY)) + Math.floor(initY)
-            return p;
-        },
-        //初始化食物的位置
-        initFood : function()
-        {
-            this.foodGrid = this.randomPoint();
+<!-- ondragstart:防拖拽生成新页面 oncontextmenu:屏蔽右键菜单-->
 
-            if(this.isInSnake(this.foodGrid))
-            {
-                this.initFood();
-                return false;
-            }
-            this.Grid[this.foodGrid[0]][this.foodGrid[1]].className = "food";
-        },
-        //判断点是否在蛇身上
-        isInSnake : function(point,pos)
-        {
-            var snakeGrid = this.snakeGrid;
-            if(point instanceof Array)
-            {
-                let n = snakeGrid.length;
-                for(let i = pos || 0; i < n; i++)
-                {
-                    if(point[0] == snakeGrid[i][0] && point[1] == snakeGrid[i][1])
-                    return true;
-                }
-            }
-            return false;
-        },
-        //给蛇涂颜色
-        paintSnake : function(){
-            var snakeGrid = this.snakeGrid;
-            for(let i = 0; i < snakeGrid.length; i++)
-            {
-                this.Grid[snakeGrid[i][0]][snakeGrid[i][1]].className = "snake_body";
-            }
-        },
-        //初始化蛇的位置
-        initSnake : function()
-        {
-            this.snakeGrid = [];
+<body ondragstart='return false' oncontextmenu='self.event.returnValue=false'>
 
-            this.snakeGrid.push([1,3]);
-            this.snakeGrid.push([1,2]);
-            this.snakeGrid.push([1,1]);
+  <div id='bar'>
+    <span class='bar'>剩余雷数：<label id='count'>0</label></span>
+    <span class='bar'>计时：<label id='time'>0</label>s</span>
+  </div>
+  <table id='grid'></table>
 
-            this.paintSnake();
+  <script>
+    var row = 10; //行数
+    var col = 10; //列数
+    var maxCount = 10; //最大地雷数量
+    var isFirstOpen = true; //第一次打开方格
+    var grid = init_grid(); //初始化
+    var count = document.getElementById('count'); //剩余雷数
+    var time = document.getElementById('time'); //计时
 
-            this.Grid[this.snakeGrid[0][0]][this.snakeGrid[0][1]].className = "snake_head";
-            this.Grid[this.snakeGrid[this.snakeGrid.length-1][0]][this.snakeGrid[this.snakeGrid.length-1][1]].className = "snake_tail";
-        },
-        //判断蛇是否撞墙
-        isInWall : function(point){
-            if(point instanceof Array){
-                if(point[0] < 0 || point[0] > this.width1 - 1 || point[1] < 0 || point[1] > this.height - 1)
-                return true;
-            }  
-            return false;
-        },
-        //初始化条件
-        
-        //控制函数运行的主函数
-        main : function(){
-            var snakeGrid = this.snakeGrid;
-            var temp = snakeGrid[snakeGrid.length-1],
-                isEnd = false;
-                headX = snakeGrid[0][0];
-                headY = snakeGrid[0][1];
-                msg = "";
-            switch(this.derectkey)
-            {
-                case 37:
-					if(this.goY!=1){this.goY=-1;this.goX=0} 	//防止控制蛇往相反反方向走
-					break;
-				case 38:
-					if(this.goX!=1){this.goX=-1;this.goY=0}
-					break;
-				case 39:
-					if(this.goY!=-1){this.goY=1;this.goX=0}
-					break;
-				case 40:
-					if(this.goX!=-1){this.goX=1;this.goY=0}
-            }
-            headX += this.goX;
-            headY += this.goY;
+    //初始化矩阵 (row-行数 col-列数)
+    function init_grid() {
 
-            if(headX == this.foodGrid[0] && headY == this.foodGrid[1])
-            {
-                this.snakeGrid.unshift(this.foodGrid);
-                this.initFood();
-                if(this.snakeGrid.length>4){		//控制蛇加速
-					if(this.snakeGrid.length==5){
-						this.speed += 5;
-					}
-					else if(this.snakeGrid.length==10){
-						this.speed += 3;
-					}
-					else if(this.snakeGrid.length==20){
-						this.speed += 3;
-					}
-					else if(this.snakeGrid.length==30){
-						this.speed += 3;
-					}
-					this.move();
-				}
-            }
-            else
-            {
-                for(var i=this.snakeGrid.length-1;i>0;i--){
-					this.snakeGrid[i] = this.snakeGrid[i-1] ;
-				}
-                this.snakeGrid[0] = [headX,headY];	
-                if(this.isInSnake(this.snakeGrid[0],1)){
-					isEnd=true;
-					msg = "哈皮，吃到自己啦！！";
-				}
-				//判断是否撞墙
-				else if(this.isInWall(this.snakeGrid[0])){
-					isEnd =true;
-					msg = "撒比伟哥，撞墙了！！";
-                }
-                if(isEnd)
-                {
-                    if(this.snakeTimer)
-                    clearInterval(this.snakeTimer);
-                    var score;
-                    let len = this.snakeGrid.length;
-                    if(len <= 5)
-                    score = len-3;
-                    else if(len>5 && len<=10)
-                    {
-                        score = 2 + 2*(len-5)
-                    }
-                    else if(len>10 && len <= 20)
-                    score = 12 + 3*(len-10);
-                    else
-                    score = 27 + 5*(len - 15);
-                    if(confirm(msg+"你的分数是："+score+"！ 是否重新开始？")){
-						this.reset();
-					}
-					return false;
-                }
-                this.Grid[temp[0]][temp[1]].className = "notSnake";
-            }
-            this.paintSnake();
-            this.Grid[headX][headY].className = "snake_head";
-            this.Grid[this.snakeGrid[this.snakeGrid.length-1][0]][this.snakeGrid[this.snakeGrid.length-1][1]].className = "snake_tail";
-        },
-        init : function(){
-            var _this = this;
-            snake_id = document.getElementById(_this.snakeId)||0 ;
-			if(snake_id){
-				document.body.removeChild(snake_id);
-			}
-            _this.Grid = _this.multiArray(_this.width,_this.height);
-            _this.creatMap();
-            _this.initSnake();
-            _this.initFood();
-            document.onkeydown = _this.bind(_this.keyDown,_this);
+      //生成矩阵html <tr>--行标签 <td>--列标签
+      let gridHtml = '';
+      for (let i = 0; i < row; i++) {
+        gridHtml += '<tr>'
+        for (let j = 0; j < col; j++) {
+          gridHtml +=
+            '<td><span class="blocks" onmousedown="block_click(' + i + ',' + j + ',event)"></span></td>';
         }
+        gridHtml += '<tr>'
+      }
+      //写入html
+      document.getElementById('grid').innerHTML = gridHtml;
+
+      //返回矩阵二维数组
+      let blocks = document.getElementsByClassName('blocks');
+      let grid = new Array();
+      for (let i = 0; i < blocks.length; i++) {
+        if (i % col === 0) {
+          grid.push(new Array());
+        }
+        //初始化计雷数
+        blocks[i].count = 0;
+        grid[parseInt(i / col)].push(blocks[i]);
+      }
+      return grid;
     }
-    new snake(20,20,"snake",10);
-}	
-</script>
+
+    //方格点击事件 _i：坐标i _j:坐标j e:鼠标事件
+    function block_click(_i, _j, e) {
+
+      //跳过已打开的方格
+      if (grid[_i][_j].isOpen) {
+        return;
+      }
+
+      //鼠标左键打开方格
+      if (e.button === 0) {
+
+        //第一次打开
+        if (isFirstOpen) {
+
+          isFirstOpen = false;
+          let count = 0; //当前地雷数
+
+          //生成地雷
+          while (count < maxCount) {
+
+            //生成随机坐标
+            let ri = Math.floor(Math.random() * row);
+            let rj = Math.floor(Math.random() * col);
+
+            //坐标不等于第一次点击方格的坐标 && 非雷方格
+            if (!(ri === _i && rj === _j) && !grid[ri][rj].isMine) {
+              grid[ri][rj].isMine = true; //自定义属性isMine代表方格为地雷
+              count++; //当前地雷数+1
+
+              //更新九宫格内非雷方格的计雷数
+              for (let i = ri - 1; i < ri + 2; i++) {
+                for (let j = rj - 1; j < rj + 2; j++) {
+                  //判断坐标防越界
+                  if (i > -1 && j > -1 && i < row && j < col) {
+                    //计雷数+1
+                    grid[i][j].count++;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        //执行打开方格函数
+        block_open(_i, _j);
+
+        //打开方格函数
+        function block_open(_i, _j) {
+
+          let block = grid[_i][_j];
+          op(block);
+
+          //设定打开方格的状态与样式
+          function op(block) {
+            block.isOpen = true; //isOpen为自定义属性，设置为true代表已打开
+            block.style.background = '#ccc'; //将背景设置为灰色
+            block.style.cursor = 'default'; //将鼠标停留样式设置为默认
+          }
+
+          if (block.isMine) {
+            //踩雷
+            block.innerHTML = '雷'; //显示为 '雷'
+            //遍历矩阵打开所有的地雷方格
+            for (let i = 0; i < row; i++) {
+              for (let j = 0; j < col; j++) {
+                //找到地雷
+                block = grid[i][j];
+                if (!block.isOpen && block.isMine) {
+                  op(block); //设置打开状态和样式
+                  block.innerHTML = '雷'; //显示为 '雷'
+                }
+              }
+            }
+            //提示游戏结束
+            alert("游戏结束");
+          } else if (block.count === 0) {
+            //打开计雷数为0的方格
+            //遍历九宫格内的方格
+            for (let i = _i - 1; i < _i + 2; i++) {
+              for (let j = _j - 1; j < _j + 2; j++) {
+                //判断是否越界&&跳过已打开的方格&&非雷
+                if (i > -1 && j > -1 && i < row && j < col && !grid[i][j].isOpen && !grid[i][j].ismine) {
+                  //递归打开方格函数
+                  block_open(i, j);
+                }
+              }
+            }
+          } else {
+            //打开计雷数不为0的方格
+            block.innerHTML = block.count; //显示计雷数
+          }
+
+        }
+      }
+      //鼠标右键标记方格
+      else if (e.button === 2) {
+
+        let block = grid[_i][_j];
+        if (block.innerHTML !== '▲') {
+          block.innerHTML = '▲';
+        } else {
+          block.innerHTML = '';
+        }
+      }
+
+      //判断游戏是否结束(所有的非雷方格已打开)
+      for (let i = 0; i < row; i++) {
+        for (let j = 0; j < col; j++) {
+          if (!grid[i][j].isMine && !grid[i][j].isOpen) {
+            return;
+          }
+        }
+      }
+      alert("游戏胜利");
+    }
+  </script>
 </body>
+
 </html>
