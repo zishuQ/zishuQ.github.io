@@ -51,13 +51,14 @@
   <table id='grid'></table>
 
   <script>
-    var row = 10; //行数
-    var col = 10; //列数
-    var maxCount = 10; //最大地雷数量
+    var row = 30; //行数
+    var col = 30; //列数
+    var maxCount = 100; //最大地雷数量
     var isFirstOpen = true; //第一次打开方格
     var grid = init_grid(); //初始化
     var count = document.getElementById('count'); //剩余雷数
     var time = document.getElementById('time'); //计时
+    count.innerText = maxCount;
 
     //初始化矩阵 (row-行数 col-列数)
     function init_grid() {
@@ -187,10 +188,12 @@
       else if (e.button === 2) {
 
         let block = grid[_i][_j];
-        if (block.innerHTML !== '▲') {
-          block.innerHTML = '▲';
+        if (block.innerHTML !== '★') {
+          block.innerHTML = '★';
+          --count.innerText;
         } else {
           block.innerHTML = '';
+          ++count.innerText;
         }
       }
 
