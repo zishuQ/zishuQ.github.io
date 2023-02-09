@@ -45,7 +45,8 @@
 <body ondragstart='return false' oncontextmenu='self.event.returnValue=false'>
 
   <div id='bar'>
-    <span class='bar'>剩余雷数：<label id='count'>0</label></span>
+    <span class='bar'>总雷数：<label id='count'>0</label></span>
+    <span class='bar'>标记数：<label id='sign'>0</label></span>
     <span class='bar'>计时：<label id='time'>0</label>s</span>
   </div>
   <table id='grid'></table>
@@ -56,7 +57,8 @@
     var maxCount = 100; //最大地雷数量
     var isFirstOpen = true; //第一次打开方格
     var grid = init_grid(); //初始化
-    var count = document.getElementById('count'); //剩余雷数
+    var count = document.getElementById('count'); //总雷数
+    var sign = document.getElementById('sign'); //标记数
     var time = document.getElementById('time'); //计时
     count.innerText = maxCount;
 
@@ -190,10 +192,10 @@
         let block = grid[_i][_j];
         if (block.innerHTML !== '★') {
           block.innerHTML = '★';
-          --count.innerText;
+          ++sign.innerText;
         } else {
           block.innerHTML = '';
-          ++count.innerText;
+          --sign.innerText;
         }
       }
 
