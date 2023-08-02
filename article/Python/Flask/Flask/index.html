@@ -1,0 +1,397 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Flask | zishuQ's blog</title><meta name="author" content="zishuQ"><meta name="copyright" content="zishuQ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="模板基本语法在社交网站上，每个人都有一个主页，借助 Jinja2 就可以写出一个通用的模板： 123456&lt;h1&gt;&amp;#123;&amp;#123; username &amp;#125;&amp;#125;的个人主页&lt;&#x2F;h1&gt;&amp;#123;% if bio %&amp;#125;    &lt;p&gt;&amp;#123;&amp;#123; bio &amp;#125;&amp;#125;&lt;&#x2F;p&gt;  &amp;#123;# 这里的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flask">
+<meta property="og:url" content="https://zishuq.github.io/article/Python/Flask/Flask/index.html">
+<meta property="og:site_name" content="zishuQ&#39;s blog">
+<meta property="og:description" content="模板基本语法在社交网站上，每个人都有一个主页，借助 Jinja2 就可以写出一个通用的模板： 123456&lt;h1&gt;&amp;#123;&amp;#123; username &amp;#125;&amp;#125;的个人主页&lt;&#x2F;h1&gt;&amp;#123;% if bio %&amp;#125;    &lt;p&gt;&amp;#123;&amp;#123; bio &amp;#125;&amp;#125;&lt;&#x2F;p&gt;  &amp;#123;# 这里的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg">
+<meta property="article:published_time" content="2023-06-30T09:46:54.000Z">
+<meta property="article:modified_time" content="2023-07-24T13:11:46.000Z">
+<meta property="article:author" content="zishuQ">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Flask">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="canonical" href="https://zishuq.github.io/article/Python/Flask/Flask/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Flask',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-24 21:11:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302205350.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="zishuQ's blog"><img class="site-icon" src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"/><span class="site-name">zishuQ's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Flask</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-30T09:46:54.000Z" title="发表于 2023-06-30 17:46:54">2023-06-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-07-24T13:11:46.000Z" title="更新于 2023-07-24 21:11:46">2023-07-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Python/">Python</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Python/Flask/">Flask</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Flask"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="模板基本语法"><a href="#模板基本语法" class="headerlink" title="模板基本语法"></a>模板基本语法</h1><p>在社交网站上，每个人都有一个主页，借助 Jinja2 就可以写出一个通用的模板：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;&#123;&#123; username &#125;&#125;的个人主页&lt;/h1&gt;</span><br><span class="line">&#123;% <span class="keyword">if</span> bio %&#125;</span><br><span class="line">    &lt;p&gt;&#123;&#123; bio &#125;&#125;&lt;/p&gt;  &#123;<span class="comment"># 这里的缩进只是为了可读性，不是必须的 #&#125;</span></span><br><span class="line">&#123;% <span class="keyword">else</span> %&#125;</span><br><span class="line">    &lt;p&gt;自我介绍为空。&lt;/p&gt;</span><br><span class="line">&#123;% endif %&#125;  &#123;<span class="comment"># 大部分 Jinja 语句都需要声明关闭 #&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>Jinja2 的语法和 Python 大致相同，你在后面会陆续接触到一些常见的用法。在模板里，你需要添加特定的定界符将 Jinja2 语句和变量标记出来，下面是三种常用的定界符：</p>
+<ul>
+<li><code>&#123;&#123; ... &#125;&#125;</code> 用来标记变量。</li>
+<li><code>&#123;% ... %&#125;</code> 用来标记语句，比如 if 语句，for 语句等。</li>
+<li>&#96;&#96; 用来写注释。</li>
+</ul>
+<p>模板中使用的变量需要在渲染的时候传递进去，具体我们后面会了解。</p>
+<h1 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h1><h2 id="使用SQLAlchemy操作数据库"><a href="#使用SQLAlchemy操作数据库" class="headerlink" title="使用SQLAlchemy操作数据库"></a>使用SQLAlchemy操作数据库</h2><ol>
+<li>安装</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask-sqlalchemy</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>设置数据库URI</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> flask_sqlalchemy <span class="keyword">import</span> SQLAlchemy</span><br><span class="line"></span><br><span class="line">WIN = sys.platform.startswith(<span class="string">&#x27;win&#x27;</span>)</span><br><span class="line"><span class="keyword">if</span> WIN:  <span class="comment"># 如果是 Windows 系统，使用三个斜线</span></span><br><span class="line">    prefix = <span class="string">&#x27;sqlite:///&#x27;</span></span><br><span class="line"><span class="keyword">else</span>:  <span class="comment"># 否则使用四个斜线</span></span><br><span class="line">    prefix = <span class="string">&#x27;sqlite:////&#x27;</span></span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">app.config[<span class="string">&#x27;SQLALCHEMY_DATABASE_URI&#x27;</span>] = prefix + os.path.join(app.root_path, <span class="string">&#x27;data.db&#x27;</span>)</span><br><span class="line">app.config[<span class="string">&#x27;SQLALCHEMY_TRACK_MODIFICATIONS&#x27;</span>] = <span class="literal">False</span>  <span class="comment"># 关闭对模型修改的监控</span></span><br><span class="line"><span class="comment"># 在扩展类实例化前加载配置</span></span><br><span class="line">db = SQLAlchemy(app)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>创建数据库模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>(db.Model):  <span class="comment"># 表名将会是 user（自动生成，小写处理）</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer, primary_key=<span class="literal">True</span>)  <span class="comment"># 主键</span></span><br><span class="line">    name = db.Column(db.String(<span class="number">20</span>))  <span class="comment"># 名字</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Movie</span>(db.Model):  <span class="comment"># 表名将会是 movie</span></span><br><span class="line">    <span class="built_in">id</span> = db.Column(db.Integer, primary_key=<span class="literal">True</span>)  <span class="comment"># 主键</span></span><br><span class="line">    title = db.Column(db.String(<span class="number">60</span>))  <span class="comment"># 电影标题</span></span><br><span class="line">    year = db.Column(db.String(<span class="number">4</span>))  <span class="comment"># 电影年份</span></span><br></pre></td></tr></table></figure>
+
+<p>模型类的编写有一些限制：</p>
+<ul>
+<li>模型类要声明继承 <code>db.Model</code>。</li>
+<li>每一个类属性（字段）要实例化 <code>db.Column</code>，传入的参数为字段的类型，下面的表格列出了常用的字段类。</li>
+<li>在 <code>db.Column()</code> 中添加额外的选项（参数）可以对字段进行设置。比如，<code>primary_key</code> 设置当前字段是否为主键。除此之外，常用的选项还有 <code>nullable</code>（布尔值，是否允许为空值）、<code>index</code>（布尔值，是否设置索引）、<code>unique</code>（布尔值，是否允许重复值）、<code>default</code>（设置默认值）等。</li>
+</ul>
+<p>常用的字段类型如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>字段类</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>db.Integer</td>
+<td>整型</td>
+</tr>
+<tr>
+<td>db.String (size)</td>
+<td>字符串，size 为最大长度，比如 db.String(20)</td>
+</tr>
+<tr>
+<td>db.Text</td>
+<td>长文本</td>
+</tr>
+<tr>
+<td>db.DateTime</td>
+<td>时间日期，Python datetime 对象</td>
+</tr>
+<tr>
+<td>db.Float</td>
+<td>浮点数</td>
+</tr>
+<tr>
+<td>db.Boolean</td>
+<td>布尔值</td>
+</tr>
+</tbody></table>
+<ol>
+<li>创建数据库表</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">env</span>) $ flask shell</span><br><span class="line">&gt;&gt;&gt; from app import db</span><br><span class="line">&gt;&gt;&gt; db.create_all()</span><br></pre></td></tr></table></figure>
+
+<p>如果你改动了模型类，想重新生成表模式，那么需要先使用 <code>db.drop_all()</code> 删除表，然后重新创建：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt; db.drop_all()</span><br><span class="line">&gt;&gt;&gt; db.create_all()</span><br></pre></td></tr></table></figure>
+
+<p>注意这会一并删除所有数据，如果你想在不破坏数据库内的数据的前提下变更表的结构，需要使用数据库迁移工具，比如集成了 <a target="_blank" rel="noopener" href="https://alembic.sqlalchemy.org/en/latest/">Alembic</a> 的 <a target="_blank" rel="noopener" href="https://github.com/miguelgrinberg/Flask-Migrate">Flask-Migrate</a> 扩展。</p>
+<blockquote>
+<p>提示 上面打开 Python Shell 使用的是 flask shell命令，而不是 python。使用这个命令启动的 Python Shell 激活了“程序上下文”，它包含一些特殊变量，这对于某些操作是必须的（比如上面的 db.create_all()调用）。请记住，后续的 Python Shell 都会使用这个命令打开。</p>
+</blockquote>
+<p>和 <code>flask shell</code>类似，我们可以编写一个自定义命令来自动执行创建数据库表操作：</p>
+<p><em>app.py：自定义命令 initdb</em></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">import click</span><br><span class="line"></span><br><span class="line">@app.cli.command()  <span class="comment"># 注册为命令，可以传入 name 参数来自定义命令</span></span><br><span class="line">@click.option(<span class="string">&#x27;--drop&#x27;</span>, is_flag=True, <span class="built_in">help</span>=<span class="string">&#x27;Create after drop.&#x27;</span>)  <span class="comment"># 设置选项</span></span><br><span class="line">def initdb(drop):</span><br><span class="line">    <span class="string">&quot;&quot;</span><span class="string">&quot;Initialize the database.&quot;</span><span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> drop:  <span class="comment"># 判断是否输入了选项</span></span><br><span class="line">        db.drop_all()</span><br><span class="line">    db.create_all()</span><br><span class="line">    click.echo(<span class="string">&#x27;Initialized database.&#x27;</span>)  <span class="comment"># 输出提示信息</span></span><br></pre></td></tr></table></figure>
+
+<p>默认情况下，如果没有指定，函数名称就是命令的名字（注意函数名中的下划线会被转换为连接线），现在执行 <code>flask initdb</code> 命令就可以创建数据库表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">env</span>) $ flask initdb</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>--drop</code> 选项可以删除表后重新创建：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">env</span>) $ flask initdb --drop</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建、读取、更新、删除¶"><a href="#创建、读取、更新、删除¶" class="headerlink" title="创建、读取、更新、删除¶"></a>创建、读取、更新、删除<a target="_blank" rel="noopener" href="https://tutorial.helloflask.com/database/#_3">¶</a></h2><p>在前面打开的 Python Shell 里，我们来测试一下常见的数据库操作。你可以跟着示例代码来操作，也可以自由练习。</p>
+<h3 id="创建¶"><a href="#创建¶" class="headerlink" title="创建¶"></a>创建<a target="_blank" rel="noopener" href="https://tutorial.helloflask.com/database/#_4">¶</a></h3><p>下面的操作演示了如何向数据库中添加记录：</p>
+<p>&#96;&gt;&gt;&gt; from app import User, Movie  # 导入模型类</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>user &#x3D; User(name&#x3D;’Grey Li’)  # 创建一个 User 记录<br>m1 &#x3D; Movie(title&#x3D;’Leon’, year&#x3D;’1994’)  # 创建一个 Movie 记录<br>m2 &#x3D; Movie(title&#x3D;’Mahjong’, year&#x3D;’1996’)  # 再创建一个 Movie 记录<br>db.session.add(user)  # 把新创建的记录添加到数据库会话<br>db.session.add(m1)<br>db.session.add(m2)<br>db.session.commit()  # 提交数据库会话，只需要在最后调用一次即可&#96;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>提示 在实例化模型类的时候，我们并没有传入 id 字段（主键），因为 SQLAlchemy 会自动处理这个字段。</p>
+</blockquote>
+<p>最后一行 <code>db.session.commit()</code> 很重要，只有调用了这一行才会真正把记录提交进数据库，前面的 <code>db.session.add()</code> 调用是将改动添加进数据库会话（一个临时区域）中。</p>
+<h3 id="读取¶"><a href="#读取¶" class="headerlink" title="读取¶"></a>读取<a target="_blank" rel="noopener" href="https://tutorial.helloflask.com/database/#_5">¶</a></h3><p>通过对模型类的 <code>query</code> 属性调用可选的过滤方法和查询方法，我们就可以获取到对应的单个或多个记录（记录以模型类实例的形式表示）。查询语句的格式如下：</p>
+<p><code>&lt;模型类&gt;.query.&lt;过滤方法（可选）&gt;.&lt;查询方法&gt;</code></p>
+<p>下面是一些常用的过滤方法：</p>
+<table>
+<thead>
+<tr>
+<th>过滤方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>filter()</td>
+<td>使用指定的规则过滤记录，返回新产生的查询对象</td>
+</tr>
+<tr>
+<td>filter_by()</td>
+<td>使用指定规则过滤记录（以关键字表达式的形式），返回新产生的查询对象</td>
+</tr>
+<tr>
+<td>order_by()</td>
+<td>根据指定条件对记录进行排序，返回新产生的查询对象</td>
+</tr>
+<tr>
+<td>group_by()</td>
+<td>根据指定条件对记录进行分组，返回新产生的查询对象</td>
+</tr>
+</tbody></table>
+<p>下面是一些常用的查询方法：</p>
+<table>
+<thead>
+<tr>
+<th>查询方法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>all()</td>
+<td>返回包含所有查询记录的列表</td>
+</tr>
+<tr>
+<td>first()</td>
+<td>返回查询的第一条记录，如果未找到，则返回 None</td>
+</tr>
+<tr>
+<td>get(id)</td>
+<td>传入主键值作为参数，返回指定主键值的记录，如果未找到，则返回 None</td>
+</tr>
+<tr>
+<td>count()</td>
+<td>返回查询结果的数量</td>
+</tr>
+<tr>
+<td>first_or_404()</td>
+<td>返回查询的第一条记录，如果未找到，则返回 404 错误响应</td>
+</tr>
+<tr>
+<td>get_or_404(id)</td>
+<td>传入主键值作为参数，返回指定主键值的记录，如果未找到，则返回 404 错误响应</td>
+</tr>
+<tr>
+<td>paginate()</td>
+<td>返回一个 Pagination 对象，可以对记录进行分页处理</td>
+</tr>
+</tbody></table>
+<p>下面的操作演示了如何从数据库中读取记录，并进行简单的查询：</p>
+<p>&#96;&gt;&gt;&gt; from app import Movie  # 导入模型类</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>movie &#x3D; Movie.query.first()  # 获取 Movie 模型的第一个记录（返回模型类实例）<br>movie.title  # 对返回的模型类实例调用属性即可获取记录的各字段数据<br>‘Leon’<br>movie.year<br>‘1994’<br>Movie.query.all()  # 获取 Movie 模型的所有记录，返回包含多个模型类实例的列表<br>[&lt;Movie 1&gt;, &lt;Movie 2&gt;]<br>Movie.query.count()  # 获取 Movie 模型所有记录的数量<br>2<br>Movie.query.get(1)  # 获取主键值为 1 的记录<br>&lt;Movie 1&gt;<br>Movie.query.filter_by(title&#x3D;’Mahjong’).first()  # 获取 title 字段值为 Mahjong 的记录<br>&lt;Movie 2&gt;<br>Movie.query.filter(Movie.title&#x3D;&#x3D;’Mahjong’).first()  # 等同于上面的查询，但使用不同的过滤方法<br>&lt;Movie 2&gt;&#96;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<blockquote>
+<p>提示 我们在说 Movie 模型的时候，实际指的是数据库中的 movie 表。表的实际名称是模型类的小写形式（自动生成），如果你想自己指定表名，可以定义 <strong>tablename</strong> 属性。</p>
+</blockquote>
+<p>对于最基础的 <code>filter()</code> 过滤方法，SQLAlchemy 支持丰富的查询操作符，具体可以访问<a target="_blank" rel="noopener" href="http://docs.sqlalchemy.org/en/latest/core/sqlelement.html#sqlalchemy.sql.operators.ColumnOperators">文档相关页面</a>查看。除此之外，还有更多的查询方法、过滤方法和数据库函数可以使用，具体可以访问文档的 <a target="_blank" rel="noopener" href="https://docs.sqlalchemy.org/en/latest/orm/query.html">Query API</a> 部分查看。</p>
+<h3 id="更新¶"><a href="#更新¶" class="headerlink" title="更新¶"></a>更新<a target="_blank" rel="noopener" href="https://tutorial.helloflask.com/database/#_6">¶</a></h3><p>下面的操作更新了 <code>Movie</code> 模型中主键为 <code>2</code> 的记录：</p>
+<p>&#96;&gt;&gt;&gt; movie &#x3D; Movie.query.get(2)</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>movie.title &#x3D; ‘WALL-E’  # 直接对实例属性赋予新的值即可<br>movie.year &#x3D; ‘2008’<br>db.session.commit()  # 注意仍然需要调用这一行来提交改动&#96;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h3 id="删除¶"><a href="#删除¶" class="headerlink" title="删除¶"></a>删除<a target="_blank" rel="noopener" href="https://tutorial.helloflask.com/database/#_7">¶</a></h3><p>下面的操作删除了 <code>Movie</code> 模型中主键为 <code>1</code> 的记录：</p>
+<p>&#96;&gt;&gt;&gt; movie &#x3D; Movie.query.get(1)</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>db.session.delete(movie)  # 使用 db.session.delete() 方法删除记录，传入模型实例<br>db.session.commit()  # 提交改动&#96;</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<h2 id="在程序里操作数据库¶"><a href="#在程序里操作数据库¶" class="headerlink" title="在程序里操作数据库¶"></a>在程序里操作数据库<a target="_blank" rel="noopener" href="https://tutorial.helloflask.com/database/#_8">¶</a></h2><p>经过上面的一番练习，我们可以在 Watchlist 里进行实际的数据库操作了。</p>
+<h3 id="在主页视图读取数据库记录¶"><a href="#在主页视图读取数据库记录¶" class="headerlink" title="在主页视图读取数据库记录¶"></a>在主页视图读取数据库记录<a target="_blank" rel="noopener" href="https://tutorial.helloflask.com/database/#_9">¶</a></h3><p>因为设置了数据库，负责显示主页的 <code>index</code> 可以从数据库里读取真实的数据：</p>
+<p><code>@app.route(&#39;/&#39;) def index():     user = User.query.first()  # 读取用户记录     movies = Movie.query.all()  # 读取所有电影记录     return render_template(&#39;index.html&#39;, user=user, movies=movies)</code></p>
+<p>在 <code>index</code> 视图中，原来传入模板的 <code>name</code> 变量被 <code>user</code> 实例取代，模板 index.html 中的两处 <code>name</code> 变量也要相应的更新为 <code>user.name</code> 属性：</p>
+<p><code>&#123;&#123; user.name &#125;&#125;&#39;s Watchlist</code></p>
+<h3 id="生成虚拟数据¶"><a href="#生成虚拟数据¶" class="headerlink" title="生成虚拟数据¶"></a>生成虚拟数据<a target="_blank" rel="noopener" href="https://tutorial.helloflask.com/database/#_10">¶</a></h3><p>因为有了数据库，我们可以编写一个命令函数把虚拟数据添加到数据库里。下面是用来生成虚拟数据的命令函数：</p>
+<p><em>app.py：创建自定义命令 forge</em></p>
+<p>&#96;import click</p>
+<p>@app.cli.command()<br>def forge():<br>    “””Generate fake data.”””<br>    db.create_all()</p>
+<pre><code># 全局的两个变量移动到这个函数内
+name = &#39;Grey Li&#39;
+movies = [
+    &#123;&#39;title&#39;: &#39;My Neighbor Totoro&#39;, &#39;year&#39;: &#39;1988&#39;&#125;,
+    &#123;&#39;title&#39;: &#39;Dead Poets Society&#39;, &#39;year&#39;: &#39;1989&#39;&#125;,
+    &#123;&#39;title&#39;: &#39;A Perfect World&#39;, &#39;year&#39;: &#39;1993&#39;&#125;,
+    &#123;&#39;title&#39;: &#39;Leon&#39;, &#39;year&#39;: &#39;1994&#39;&#125;,
+    &#123;&#39;title&#39;: &#39;Mahjong&#39;, &#39;year&#39;: &#39;1996&#39;&#125;,
+    &#123;&#39;title&#39;: &#39;Swallowtail Butterfly&#39;, &#39;year&#39;: &#39;1996&#39;&#125;,
+    &#123;&#39;title&#39;: &#39;King of Comedy&#39;, &#39;year&#39;: &#39;1999&#39;&#125;,
+    &#123;&#39;title&#39;: &#39;Devils on the Doorstep&#39;, &#39;year&#39;: &#39;1999&#39;&#125;,
+    &#123;&#39;title&#39;: &#39;WALL-E&#39;, &#39;year&#39;: &#39;2008&#39;&#125;,
+    &#123;&#39;title&#39;: &#39;The Pork of Music&#39;, &#39;year&#39;: &#39;2012&#39;&#125;,
+]
+
+user = User(name=name)
+db.session.add(user)
+for m in movies:
+    movie = Movie(title=m[&#39;title&#39;], year=m[&#39;year&#39;])
+    db.session.add(movie)
+
+db.session.commit()
+click.echo(&#39;Done.&#39;)`
+</code></pre>
+<p>现在执行 <code>flask forge</code> 命令就会把所有虚拟数据添加到数据库里：</p>
+<p><code>(env) $ flask forge</code></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zishuq.github.io">zishuQ</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zishuq.github.io/article/Python/Flask/Flask/">https://zishuq.github.io/article/Python/Flask/Flask/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zishuq.github.io" target="_blank">zishuQ's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/Flask/">Flask</a><a class="post-meta__tags" href="/tags/web/">web</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/web%E5%AE%89%E5%85%A8/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" title="PHP反序列化"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">PHP反序列化</div></div></a></div><div class="next-post pull-right"><a href="/article/Java%E7%AE%97%E6%B3%95/Eclipse%E8%AE%BE%E7%BD%AE/Eclipse%E8%AE%BE%E7%BD%AE/" title="Eclipse设置"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Eclipse设置</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/article/Python/Django/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/" title="Django&#x2F;Flask Web项目部署"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">Django&#x2F;Flask Web项目部署</div></div></a></div><div><a href="/article/Python/Django/Django%E5%BC%80%E5%8F%91%E5%AE%9E%E4%BE%8B/Django%E5%BC%80%E5%8F%91/" title="Django开发实例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">Django开发实例</div></div></a></div><div><a href="/article/Python/pandas%E5%8A%9E%E5%85%AC%E8%A1%A8%E6%A0%BC%E5%A4%84%E7%90%86/pandas/" title="pandas办公表格处理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">pandas办公表格处理</div></div></a></div><div><a href="/article/Python/Django/Django%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/Django%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/" title="Django基础内容"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">Django基础内容</div></div></a></div><div><a href="/article/Python/Django/%E6%80%BB%E7%BB%93%E5%9B%9E%E9%A1%BE/%E6%80%BB%E7%BB%93%E5%9B%9E%E9%A1%BE/" title="总结回顾"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">总结回顾</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zishuQ</div><div class="author-info__description">用于记录学习内容的个人博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zishuQ" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zishuq77@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E6%9D%BF%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">模板基本语法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">2.</span> <span class="toc-text">数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8SQLAlchemy%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="toc-number">2.1.</span> <span class="toc-text">使用SQLAlchemy操作数据库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E3%80%81%E8%AF%BB%E5%8F%96%E3%80%81%E6%9B%B4%E6%96%B0%E3%80%81%E5%88%A0%E9%99%A4%C2%B6"><span class="toc-number">2.2.</span> <span class="toc-text">创建、读取、更新、删除</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%C2%B6"><span class="toc-number">2.2.1.</span> <span class="toc-text">创建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%C2%B6"><span class="toc-number">2.2.2.</span> <span class="toc-text">读取</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%C2%B6"><span class="toc-number">2.2.3.</span> <span class="toc-text">更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%C2%B6"><span class="toc-number">2.2.4.</span> <span class="toc-text">删除</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8%E7%A8%8B%E5%BA%8F%E9%87%8C%E6%93%8D%E4%BD%9C%E6%95%B0%E6%8D%AE%E5%BA%93%C2%B6"><span class="toc-number">2.3.</span> <span class="toc-text">在程序里操作数据库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E4%B8%BB%E9%A1%B5%E8%A7%86%E5%9B%BE%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%B0%E5%BD%95%C2%B6"><span class="toc-number">2.3.1.</span> <span class="toc-text">在主页视图读取数据库记录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E6%88%90%E8%99%9A%E6%8B%9F%E6%95%B0%E6%8D%AE%C2%B6"><span class="toc-number">2.3.2.</span> <span class="toc-text">生成虚拟数据</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/hello-world/" title="Hello World">Hello World</a><time datetime="2023-07-30T23:33:33.900Z" title="发表于 2023-07-31 07:33:33">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/Web%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" title="Web后端开发">Web后端开发</a><time datetime="2023-07-30T23:16:03.000Z" title="发表于 2023-07-31 07:16:03">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%85%A5%E9%97%A8/Web%E5%85%A5%E9%97%A8/" title="Web入门">Web入门</a><time datetime="2023-07-30T02:27:55.000Z" title="发表于 2023-07-30 10:27:55">2023-07-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Maven/Maven/" title="Maven">Maven</a><time datetime="2023-07-29T08:13:22.000Z" title="发表于 2023-07-29 16:13:22">2023-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/" title="前端工程">前端工程</a><time datetime="2023-07-28T02:51:38.000Z" title="发表于 2023-07-28 10:51:38">2023-07-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By zishuQ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"scriptForm":"local","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>

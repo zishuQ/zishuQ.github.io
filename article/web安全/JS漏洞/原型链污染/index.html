@@ -1,0 +1,222 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>原型链污染 | zishuQ's blog</title><meta name="author" content="zishuQ"><meta name="copyright" content="zishuQ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="参考文章JavaScript原型链污染原理及相关CVE漏洞剖析 - FreeBuf网络安全行业门户 Node.js原型链污染的利用 - FreeBuf网络安全行业门户 用前端原型链漏洞污染拿下了服务器 - 腾讯云开发者社区-腾讯云 (tencent.com) 原型 三个名字 隐式原型：所有引用类型（函数、数组、对象）都有 __proto__ 属性，例如arr.__proto__ 显式原型：所有函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原型链污染">
+<meta property="og:url" content="https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/JS%E6%BC%8F%E6%B4%9E/%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/index.html">
+<meta property="og:site_name" content="zishuQ&#39;s blog">
+<meta property="og:description" content="参考文章JavaScript原型链污染原理及相关CVE漏洞剖析 - FreeBuf网络安全行业门户 Node.js原型链污染的利用 - FreeBuf网络安全行业门户 用前端原型链漏洞污染拿下了服务器 - 腾讯云开发者社区-腾讯云 (tencent.com) 原型 三个名字 隐式原型：所有引用类型（函数、数组、对象）都有 __proto__ 属性，例如arr.__proto__ 显式原型：所有函数">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg">
+<meta property="article:published_time" content="2023-06-30T09:46:54.000Z">
+<meta property="article:modified_time" content="2023-07-24T13:11:46.000Z">
+<meta property="article:author" content="zishuQ">
+<meta property="article:tag" content="zishuQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="canonical" href="https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/JS%E6%BC%8F%E6%B4%9E/%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '原型链污染',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-24 21:11:46'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302205350.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="zishuQ's blog"><img class="site-icon" src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"/><span class="site-name">zishuQ's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">原型链污染</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-30T09:46:54.000Z" title="发表于 2023-06-30 17:46:54">2023-06-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-07-24T13:11:46.000Z" title="更新于 2023-07-24 21:11:46">2023-07-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web%E5%AE%89%E5%85%A8/JS%E6%BC%8F%E6%B4%9E/">JS漏洞</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="原型链污染"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/275619.html">JavaScript原型链污染原理及相关CVE漏洞剖析 - FreeBuf网络安全行业门户</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/264966.html">Node.js原型链污染的利用 - FreeBuf网络安全行业门户</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1880443">用前端原型链漏洞污染拿下了服务器 - 腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+<h1 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h1><ul>
+<li>三个名字<ol>
+<li><strong>隐式原型</strong>：所有引用类型（函数、数组、对象）都有 <code>__proto__</code> 属性，例如<code>arr.__proto__</code></li>
+<li><strong>显式原型</strong>：所有函数拥有<code>prototype</code>属性，例如：<code>func.prototype</code></li>
+<li><strong>原型对象</strong>：拥有<code>prototype</code>属性的对象，在定义函数时被创建</li>
+</ol>
+</li>
+</ul>
+<p><code>JavaScript</code> 中每个对象都拥有一个原型对象，对象以其原型为模板，从原型继承方法和属性。原型对象也可能拥有原型，并从中继承方法和属性，一层一层、以此类推。这种关系常被称为原型链（prototype chain）</p>
+<p>示例：</p>
+<ol>
+<li>数组原型链：<strong>arr → Array.prototype → Object.prototype</strong></li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>]</span><br><span class="line"><span class="comment">// 修改forEach方法</span></span><br><span class="line"><span class="title class_">Array</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">forEach</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> result = <span class="string">&quot;result : &quot;</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>, n = <span class="variable language_">this</span>.<span class="property">length</span>; i &lt; n; ++i) &#123;</span><br><span class="line">        result += <span class="variable language_">this</span>[i];</span><br><span class="line">        result += <span class="string">&quot; &quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(result);</span><br><span class="line">&#125;</span><br><span class="line">arr.<span class="title function_">forEach</span>()</span><br><span class="line"><span class="comment">// result : a b c</span></span><br><span class="line"><span class="comment">// arr中没有forEach()方法，向其原型寻找，此时其原型中的forEach方法已被我们修改，就会返回被修改后的结果。修改其父类，也就是其原型，达到攻击的手段</span></span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>对象原型链：<strong>object → class.prototype → Object.prototype</strong></li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="title function_">constructor</span>(<span class="params">name, age, gender</span>) &#123;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">gender</span> = gender;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&#x27;zishuQ&#x27;</span>, <span class="number">19</span>, <span class="string">&#x27;male&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(person);</span><br><span class="line"><span class="comment">// Person &#123;name: &#x27;zishuQ&#x27;, age: 19, gender: &#x27;male&#x27;&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改Object的原型，添加introduce()方法</span></span><br><span class="line"><span class="title class_">Object</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">introduce</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;my name is &quot;</span> + <span class="variable language_">this</span>.<span class="property">name</span> + <span class="string">&quot;!!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">person.<span class="title function_">introduce</span>();</span><br><span class="line"><span class="comment">// my name is zishuQ!!</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改Person的原型，添加introduce()方法</span></span><br><span class="line"><span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>.<span class="property">introduce</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;This is Person prototype&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">person.<span class="title function_">introduce</span>();</span><br><span class="line"><span class="comment">// This is Person prototype</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 从这个例子可以看到，当Obejct和Person的原型都被修改时，会先找Person的原型</span></span><br></pre></td></tr></table></figure>
+
+<p><code>person</code>是一个<code>Person</code>类的示例，有四个属性：<code>name</code>、<code>age</code>、<code>gender</code>、<code>proto</code>。前三个是在构建函数中定义的，第4个属性<code>proto</code>就是<code>Person.prototype</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301536906.png" alt="Untitled"></p>
+<p>这个机制的作用是什么呢？当我们访问<code>person</code>的一个属性时,浏览器首先查找<code>person</code>是否有这个属性.如果没有,然后浏览器就会在<code>person</code>的<code>proto</code>中查找这个属性(也就是<code>Person.prototype</code>)。如果<code>Person.prototype</code>有这个属性，那么这个属性就会被使用。否则，如果<code>Person.prototype</code>没有这个属性，浏览器就会去查找<code>Person.prototype</code>的<code>proto</code>，看它是否有这个属性，依次类推。默认情况下，所有类的原型属性的<code>proto</code>都是<code>Object.prototype</code>。</p>
+<p><del>JavaScript的对象在访问自身没有的变量或者方法时，会向其父类（也就是原型）寻找，没找到再向其父类寻找，对于本例来说就是：</del></p>
+<p><del>person.introduce();</del></p>
+<p><del>person 自身没有introduce()方法，向Person类寻找，Person类找到则返回，没找到继续向Object类寻找。</del></p>
+<ol>
+<li>攻击的例子</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123; <span class="number">1</span> : <span class="string">&quot;a&quot;</span>, <span class="number">2</span> : <span class="string">&quot;b&quot;</span>&#125;;</span><br><span class="line">a.<span class="property">__proto__</span>.<span class="property">role</span> = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="title function_">alert</span>(<span class="string">&quot;Its polluted!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> b = &#123;&#125;;</span><br><span class="line">b.<span class="title function_">role</span>();</span><br><span class="line"><span class="comment">// Its polluted!</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="原型式继承"><a href="#原型式继承" class="headerlink" title="原型式继承"></a>原型式继承</h1><p>由于JavaScript没有类似Java中的Class概念，继承都是由原型链来实现的。实现继承的方法很多，例：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age, gender</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">gender</span> = gender;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Teacher</span>(<span class="params">name, age, gender, subject</span>) &#123;</span><br><span class="line">    <span class="title class_">Person</span>.<span class="title function_">call</span>(<span class="variable language_">this</span>, name, age, gender);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">subject</span> = subject;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title class_">Teacher</span>.<span class="property"><span class="keyword">prototype</span></span> = <span class="keyword">new</span> <span class="title class_">Person</span>();</span><br></pre></td></tr></table></figure>
+
+<p>创建一个构造函数<code>Teacher</code>，其中调用<code>Person.call</code>运行<code>Person</code>构造函数。<code>Person.call</code>函数的第一个参数指明了在运行这个函数时想对“this”指定的值，此处是<code>Teacher</code>的<code>this</code>，即<code>Person</code>构造函数里对<code>this.name</code>赋值，实际上是对<code>Teacher</code>的<code>this</code>赋值。接着用<code>Object.create()</code>方法创建一个新对象<code>proto</code>，这个对象使用<code>Person.prototype</code>来作为它的<code>proto</code>。然后将<code>Teacher</code>和<code>proto</code>相互“关联”，<code>proto</code>的构造函数是<code>Teacher</code>，<code>Teacher</code>的原型是<code>proto</code>。这样就实现了<code>Teacher</code>对<code>Person</code>的继承，此时<code>Teacher.prototype</code>如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301536907.png" alt="Untitled"></p>
+<p>Teacher.prototype的proto属性是Person.prototype，原型链也就多了“一层”。</p>
+<p><strong>Teacher → Teacher.prototype → Person.prototype → Object.prototype</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301536908.png" alt="Untitled"></p>
+<h1 id="原型链污染"><a href="#原型链污染" class="headerlink" title="原型链污染"></a>原型链污染</h1><p>在 JavaScript发展历史上，很少有真正的私有属性，类的所有属性都允许被公开的访问和修改，包括 proto，构造函数和原型。攻击者可以通过注入其他值来覆盖或污染这些 proto，构造函数和原型属性。然后，所有继承了被污染原型的对象都会受到影响。原型链污染通常会导致拒绝服务、篡改程序执行流程、导致远程执行代码等漏洞。</p>
+<p>原型链污染的发生主要有两种场景：不安全的对象递归合并和按路径定义属性。</p>
+<p>其他语言，例如 Java，可以通过 <code>public</code>、<code>(default)</code>、<code>promoted</code>、<code>private</code>的访问限制符避免此类问题。对应着 Java来看，JavaScript里面的所有属性都是 public属性</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Student</span> &#123;</span><br><span class="line">		<span class="keyword">private</span> String name;</span><br><span class="line">		<span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">		<span class="comment">// true is male, false is female</span></span><br><span class="line">		<span class="keyword">private</span> <span class="type">boolean</span> gender;</span><br><span class="line">		</span><br><span class="line">		Student(String name, <span class="type">int</span> age, <span class="type">boolean</span> gender) &#123;</span><br><span class="line">				<span class="built_in">this</span>.name = name;</span><br><span class="line">				<span class="built_in">this</span>.age = age;</span><br><span class="line">				<span class="built_in">this</span>.gender = gender;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// use get/set method to change parameter</span></span><br><span class="line">		<span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">				<span class="built_in">this</span>.name = name;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">void</span> <span class="title function_">setAge</span><span class="params">(<span class="type">int</span> age)</span> &#123;</span><br><span class="line">				<span class="built_in">this</span>.age = age;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">void</span> <span class="title function_">setGender</span><span class="params">(<span class="type">boolean</span> gender)</span> &#123;</span><br><span class="line">				<span class="built_in">this</span>.gender = gender;</span><br><span class="line">		&#125;</span><br><span class="line">		String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">				<span class="keyword">return</span> name;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="type">int</span> <span class="title function_">getAge</span><span class="params">()</span> &#123;</span><br><span class="line">				<span class="keyword">return</span> age;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="type">boolean</span> <span class="title function_">getGender</span><span class="params">()</span> &#123;</span><br><span class="line">				<span class="keyword">return</span> gender;</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="不安全的对象递归合并"><a href="#不安全的对象递归合并" class="headerlink" title="不安全的对象递归合并"></a>不安全<strong><strong>的对象递归合并</strong></strong></h1><figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title function_">merge</span> = (<span class="params">target, source</span>) =&gt; &#123;</span><br><span class="line">	<span class="comment">// Iterate through `source` properties and if an `Object` set property to merge of `target` and `source` properties</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">const</span> key <span class="keyword">of</span> <span class="title class_">Object</span>.<span class="title function_">keys</span>(source)) &#123;</span><br><span class="line">		<span class="keyword">if</span> (source[key] <span class="keyword">instanceof</span> <span class="title class_">Object</span>) &#123;</span><br><span class="line">			<span class="title class_">Object</span>.<span class="title function_">assign</span>(source[key], <span class="title function_">merge</span>(target[key], source[key]));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Join `target` and modified `source`</span></span><br><span class="line">	<span class="title class_">Object</span>.<span class="title function_">assign</span>(target || &#123;&#125;, source)</span><br><span class="line">	<span class="keyword">return</span> target</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name, age, gender</span>) &#123;</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">name</span> = name;</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">age</span> = age;</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">gender</span> = gender;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> newperson = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;test1&quot;</span>, <span class="number">22</span>, <span class="string">&quot;male&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> job = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="string">&#x27;&#123;&quot;title&quot;:&quot;Security Engineer&quot;,&quot;country&quot;:&quot;China&quot;,&quot;__proto__&quot;:&#123;&quot;x&quot;:1&#125;&#125;&#x27;</span>);</span><br><span class="line"><span class="title function_">merge</span>(newperson, job);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(newperson);</span><br></pre></td></tr></table></figure>
+
+<p>（说明：JavaScript自带的Object.assign只能<strong>深拷贝</strong>第一层，第一层以后还是<strong>浅拷贝</strong>。因此很多开发者都会自定义一些递归合并函数。）</p>
+<p>如果有这样一个场景：job对象是由用户输入的，并且用户可以输入任意对象。那么我们输入一个含有“proto”属性的对象，那合并的时候就可以把person的原型给修改了。 此时如果我们新建一个Person对象，可以发现，新建的对象的原型已被修改。</p>
+<p>需要注意的是，只有不安全的递归合并函数才会导致原型链污染，非递归的算法是不会导致原型链污染的，例如JavaScript自带的Object.assign。</p>
+<p>示例：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">Person</span>(<span class="params">name,age,gender</span>) &#123;</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">name</span>=name;</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">age</span>=age;</span><br><span class="line">	<span class="variable language_">this</span>.<span class="property">gender</span>=gender;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> person1 = <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;test1&quot;</span>,<span class="number">22</span>,<span class="string">&quot;male&quot;</span>);</span><br><span class="line"><span class="keyword">let</span> job = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(<span class="string">&#x27;&#123;&quot;title&quot;:&quot;Security Engineer&quot;,&quot;country&quot;:&quot;China&quot;,&quot;__proto__&quot;:&#123;&quot;x&quot;:1&#125;&#125;&#x27;</span>);</span><br><span class="line"><span class="title class_">Object</span>.<span class="title function_">assign</span>(person1,job);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title class_">Person</span>.<span class="property"><span class="keyword">prototype</span></span>);</span><br></pre></td></tr></table></figure>
+
+<p>此时再新建一个Person对象，可以发现，原型未被污染。</p>
+<p>这是因为Object.assign在合并时，对于<strong>简单类型</strong>的属性值得到的是<strong>深拷贝</strong>，如<strong>string</strong>，<strong>number</strong>。如果属性值是<strong>对象或其他引用类型</strong>，则是<strong>浅拷贝</strong>。上面例子中的proto就是一个<strong>浅拷贝</strong>，合并后person的原型只是指向了一个新对象，即{“x”: 1}，Person.prototype没有受到影响。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zishuq.github.io">zishuQ</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/JS%E6%BC%8F%E6%B4%9E/%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/">https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/JS%E6%BC%8F%E6%B4%9E/%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zishuq.github.io" target="_blank">zishuQ's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/web%E5%AE%89%E5%85%A8/JS%E6%BC%8F%E6%B4%9E/xss%E6%BC%8F%E6%B4%9E/" title="xss漏洞"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">xss漏洞</div></div></a></div><div class="next-post pull-right"><a href="/article/web%E5%AE%89%E5%85%A8/JS%E6%BC%8F%E6%B4%9E/%E6%B2%99%E7%AE%B1%E9%80%83%E9%80%B8/" title="沙箱逃逸"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">沙箱逃逸</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zishuQ</div><div class="author-info__description">用于记录学习内容的个人博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zishuQ" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zishuq77@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="toc-number">1.</span> <span class="toc-text">参考文章</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B"><span class="toc-number"></span> <span class="toc-text">原型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E5%BC%8F%E7%BB%A7%E6%89%BF"><span class="toc-number"></span> <span class="toc-text">原型式继承</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E9%93%BE%E6%B1%A1%E6%9F%93"><span class="toc-number"></span> <span class="toc-text">原型链污染</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%AF%B9%E8%B1%A1%E9%80%92%E5%BD%92%E5%90%88%E5%B9%B6"><span class="toc-number"></span> <span class="toc-text">不安全的对象递归合并</span></a></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/hello-world/" title="Hello World">Hello World</a><time datetime="2023-07-30T23:33:33.900Z" title="发表于 2023-07-31 07:33:33">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/Web%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" title="Web后端开发">Web后端开发</a><time datetime="2023-07-30T23:16:03.000Z" title="发表于 2023-07-31 07:16:03">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%85%A5%E9%97%A8/Web%E5%85%A5%E9%97%A8/" title="Web入门">Web入门</a><time datetime="2023-07-30T02:27:55.000Z" title="发表于 2023-07-30 10:27:55">2023-07-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Maven/Maven/" title="Maven">Maven</a><time datetime="2023-07-29T08:13:22.000Z" title="发表于 2023-07-29 16:13:22">2023-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/" title="前端工程">前端工程</a><time datetime="2023-07-28T02:51:38.000Z" title="发表于 2023-07-28 10:51:38">2023-07-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By zishuQ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"scriptForm":"local","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>

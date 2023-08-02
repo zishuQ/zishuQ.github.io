@@ -1,0 +1,258 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Django/Flask Web项目部署 | zishuQ's blog</title><meta name="author" content="zishuQ"><meta name="copyright" content="zishuQ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Web项目部署  本质三件事：  租个服务器（含公网ip）+ 配置环境 代码放在服务器 程序运行起来  1. 购买云服务器2. 创建虚拟环境12python -m venv venvsource venv&#x2F;bin&#x2F;activate  3.环境uwsgi参考文章： Setting up Django and your web server with uWSGI and nginx — uWSGI 2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django&#x2F;Flask Web项目部署">
+<meta property="og:url" content="https://zishuq.github.io/article/Python/Django/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/index.html">
+<meta property="og:site_name" content="zishuQ&#39;s blog">
+<meta property="og:description" content="Web项目部署  本质三件事：  租个服务器（含公网ip）+ 配置环境 代码放在服务器 程序运行起来  1. 购买云服务器2. 创建虚拟环境12python -m venv venvsource venv&#x2F;bin&#x2F;activate  3.环境uwsgi参考文章： Setting up Django and your web server with uWSGI and nginx — uWSGI 2">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg">
+<meta property="article:published_time" content="2023-06-30T09:46:54.000Z">
+<meta property="article:modified_time" content="2023-07-27T03:16:39.000Z">
+<meta property="article:author" content="zishuQ">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="canonical" href="https://zishuq.github.io/article/Python/Django/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Django/Flask Web项目部署',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-27 11:16:39'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302205350.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="zishuQ's blog"><img class="site-icon" src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"/><span class="site-name">zishuQ's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Django/Flask Web项目部署</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-30T09:46:54.000Z" title="发表于 2023-06-30 17:46:54">2023-06-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-07-27T03:16:39.000Z" title="更新于 2023-07-27 11:16:39">2023-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Python/">Python</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Python/Django/">Django</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Python/Django/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/">Web项目部署</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Django/Flask Web项目部署"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="Web项目部署"><a href="#Web项目部署" class="headerlink" title="Web项目部署"></a>Web项目部署</h1><p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301313685.png" alt="Untitled"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301313686.png" alt="Untitled"></p>
+<p>本质三件事：</p>
+<ul>
+<li>租个服务器（含<strong>公网ip</strong>）+ 配置环境</li>
+<li>代码放在服务器</li>
+<li>程序运行起来</li>
+</ul>
+<h1 id="1-购买云服务器"><a href="#1-购买云服务器" class="headerlink" title="1. 购买云服务器"></a>1. 购买云服务器</h1><h1 id="2-创建虚拟环境"><a href="#2-创建虚拟环境" class="headerlink" title="2. 创建虚拟环境"></a>2. 创建虚拟环境</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m venv venv</span><br><span class="line"><span class="built_in">source</span> venv/bin/activate</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-环境uwsgi"><a href="#3-环境uwsgi" class="headerlink" title="3.环境uwsgi"></a>3.环境uwsgi</h1><p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html">Setting up Django and your web server with uWSGI and nginx — uWSGI 2.0 documentation</a></p>
+<p>激活虚拟环境并安装uwsgi</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> venv/bin/activate</span><br><span class="line">pip install uwsgi</span><br></pre></td></tr></table></figure>
+
+<p>基于uwsgi运行项目</p>
+<ul>
+<li>命令参数</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># flask 框架</span></span><br><span class="line">uwsgi --http:80 --wsgi-file app.py --callable app</span><br><span class="line"></span><br><span class="line"><span class="comment"># django 框架</span></span><br><span class="line">uwsgi --http: 8000 --module mysite.wsgi</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>文件参数（推荐）</p>
+<ul>
+<li>创建venv_uwsgi.ini（启动flask）</li>
+</ul>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[uwsgi]</span><br><span class="line">socket = 127.0.0.1:8077</span><br><span class="line"><span class="built_in">chdir</span> = /home/ubuntu/flaskProject [项目根目录]</span><br><span class="line">wsgi-file = app.py</span><br><span class="line">callable = app</span><br><span class="line">processes = 4 <span class="comment"># 进程数</span></span><br><span class="line">virtualenv = /home/ubuntu/flaskProject/venv/ [虚拟环境]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>（给django的配置）</li>
+</ul>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[uwsgi]</span><br><span class="line">socket=127.0.0.1:8077</span><br><span class="line">http-timeout = 86400</span><br><span class="line">http-keepalive = true</span><br><span class="line">chdir = /home/ubuntu/djangoStaffingSystem/</span><br><span class="line">module = app01.wsgi:application</span><br><span class="line">master = true</span><br><span class="line">processes = 4</span><br><span class="line">threads = 2</span><br><span class="line">vacuum = true</span><br><span class="line">max-requests = 10000</span><br><span class="line">die-on-term = true</span><br><span class="line">home = /home/ubuntu/djangoStaffingSystem/venv/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>执行命令</li>
+</ul>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> venv/bin/activate</span><br><span class="line">uwsgi --ini venv_uwsgi.ini</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以后台的方式去运行</p>
+</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uwsgi --ini venv_uwsgi.ini &amp;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>停止</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep venv_uwsgi</span><br><span class="line"><span class="built_in">kill</span> -9 [进程]</span><br></pre></td></tr></table></figure>
+
+<h1 id="Nginx配置"><a href="#Nginx配置" class="headerlink" title="Nginx配置"></a>Nginx配置</h1><p><a target="_blank" rel="noopener" href="https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html">Setting up Django and your web server with uWSGI and nginx — uWSGI 2.0 documentation</a></p>
+<h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1. 安装"></a>1. 安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install nginx</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-配置"><a href="#2-配置" class="headerlink" title="2. 配置"></a>2. 配置</h2><ul>
+<li>普通请求 → 8077（给uwsgi服务处理）</li>
+<li>&#x2F;static&#x2F; → &#x2F;home&#x2F;ubuntu&#x2F;djangoStaffingSystem&#x2F;app01&#x2F;static</li>
+</ul>
+<ol>
+<li>nginx的默认配置文件路径    <strong>&#x2F;etc&#x2F;nginx&#x2F;nginx.conf</strong></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">user www-data;</span><br><span class="line">worker_processes auto;</span><br><span class="line">pid /run/nginx.pid;</span><br><span class="line">include /etc/nginx/modules-enabled/*.conf;</span><br><span class="line"></span><br><span class="line">events &#123;</span><br><span class="line">	worker_connections 768;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line"></span><br><span class="line">	sendfile on;</span><br><span class="line">	tcp_nopush on;</span><br><span class="line">	tcp_nodelay on;</span><br><span class="line">	keepalive_timeout 65;</span><br><span class="line">	types_hash_max_size 2048;</span><br><span class="line"></span><br><span class="line">	include /etc/nginx/mime.types;</span><br><span class="line">	default_type application/octet-stream;</span><br><span class="line"></span><br><span class="line">	ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; <span class="comment"># Dropping SSLv3, ref: POODLE</span></span><br><span class="line">	ssl_prefer_server_ciphers on;</span><br><span class="line"></span><br><span class="line">	access_log /var/log/nginx/access.log;</span><br><span class="line">	error_log /var/log/nginx/error.log;</span><br><span class="line"></span><br><span class="line">	gzip on;</span><br><span class="line"></span><br><span class="line">	include /etc/nginx/conf.d/*.conf;</span><br><span class="line">	include /etc/nginx/sites-enabled/*;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>在 <strong>&#x2F;etc&#x2F;nginx&#x2F;sites-enabled</strong> 路径下创建你的配置文件 <strong>djg.conf</strong></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># djg.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># the upstream component nginx needs to connect to</span></span><br><span class="line">upstream django &#123;</span><br><span class="line">        <span class="comment"># server unix:///path/to/your/mysite/mysite.sock; # for a file socket</span></span><br><span class="line">        server 127.0.0.1:8077; <span class="comment"># for a web port socketvim</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># configuration of the server</span></span><br><span class="line">server &#123;</span><br><span class="line">        <span class="comment"># the port your site will be served on</span></span><br><span class="line">        listen 80;</span><br><span class="line">        listen [::]:80;</span><br><span class="line">        <span class="comment"># the domain name it will serve for</span></span><br><span class="line">        server_name 172.17.1.179; <span class="comment"># substitute your machine&#x27;s IP address or FQDN</span></span><br><span class="line">        charset utf-8;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># max upload size</span></span><br><span class="line">        client_max_body_size 75M;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Django static</span></span><br><span class="line">        location /static &#123;</span><br><span class="line">                <span class="built_in">alias</span> /home/zishuq/djgPro/app01/static; <span class="comment"># your Django project&#x27;s static files - amend as required</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># Finally, send all non-media requests to the Django server.</span></span><br><span class="line">        location / &#123;</span><br><span class="line">                uwsgi_pass django;</span><br><span class="line">                include /etc/nginx/uwsgi_params; <span class="comment"># the uwsgi_params file you installed</span></span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>写好uwsgi.ini配置文件</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># djangoStaffingSystem.ini file</span></span><br><span class="line">[uwsgi]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Django-related settings</span></span><br><span class="line"><span class="comment"># the base directory (full path)</span></span><br><span class="line"><span class="built_in">chdir</span>=/home/zishuq/djgPro</span><br><span class="line"><span class="comment"># Django&#x27;s wsgi file</span></span><br><span class="line">module=djangoStaffingSystem.wsgi:application</span><br><span class="line"><span class="comment"># the virtualenv (full path)</span></span><br><span class="line">home=/home/zishuq/djgPro/venv</span><br><span class="line"></span><br><span class="line"><span class="comment"># process-related settings</span></span><br><span class="line"><span class="comment"># amster</span></span><br><span class="line">master=<span class="literal">true</span></span><br><span class="line"><span class="comment"># maximum number of worker process</span></span><br><span class="line">processes=10</span><br><span class="line"><span class="comment"># the socket (use the full path to be safe)</span></span><br><span class="line">socket=127.0.0.1:8077</span><br><span class="line"><span class="comment"># ... with appropriate permissions - may be needed</span></span><br><span class="line"><span class="comment"># chmod-socket=664</span></span><br><span class="line"><span class="comment"># clear environment on exit</span></span><br><span class="line">vacuum=<span class="literal">true</span></span><br><span class="line"></span><br><span class="line">http-timeout=86400</span><br><span class="line">http-keepalive=<span class="literal">true</span></span><br><span class="line">static-map=/static=/home/zishuq/djgPro/app01/static</span><br><span class="line">threads=2</span><br><span class="line">max-requests=10000</span><br><span class="line">die-on-term=<span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="3-启动Nginx和uWSGI"><a href="#3-启动Nginx和uWSGI" class="headerlink" title="3. 启动Nginx和uWSGI"></a>3. 启动Nginx和uWSGI</h2><ul>
+<li>Nginx命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx    <span class="comment"># 启动nginx服务</span></span><br><span class="line">systemctl stop nginx     <span class="comment"># 停止nginx服务</span></span><br><span class="line">systemctl restart nginx  <span class="comment"># 重启nginx服务</span></span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> nginx   <span class="comment"># 开机自动启动nginx服务</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>uWSGI命令</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">uwsgi --http :8000 --module djangoProject.wsgi <span class="comment"># 通过http协议启动8000端口访问项目</span></span><br><span class="line">uwsgi --http :8000 --wsgi-file test.py <span class="comment"># 通过http协议启动8000端口访问test.py文件</span></span><br><span class="line">uwsgi --socket :8000 --wsgi-file test.py <span class="comment"># 通过socket协议启动8000端口访问test.py文件</span></span><br><span class="line"></span><br><span class="line">uwsgi --ini uwsgi.ini <span class="comment"># 通过配置文件的方式启动</span></span><br><span class="line">uwsgi --ini uwsgi.ini &amp; <span class="comment"># 加 &amp;可以在后台运行，不会影响终端的操作</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止uwsgi服务</span></span><br><span class="line">ps -ef|grep uwsgi.ini</span><br><span class="line"><span class="built_in">kill</span> -9 [进程号]</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-访问"><a href="#4-访问" class="headerlink" title="4. 访问"></a>4. 访问</h2><p>访问 <strong>localhost</strong></p>
+<h1 id="重启脚本"><a href="#重启脚本" class="headerlink" title="重启脚本"></a>重启脚本</h1><p>shell脚本 </p>
+<p>重启脚本 reboot.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\033[34m--------------------wsgi process--------------------\033[0m&quot;</span></span><br><span class="line"></span><br><span class="line">ps -ef|grep uwsgi.ini | grep -v grep</span><br><span class="line"></span><br><span class="line"><span class="built_in">sleep</span> 0.5</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&#x27;\n--------------------going to close--------------------&#x27;</span></span><br><span class="line"></span><br><span class="line">ps -ef |grep uwsgi.ini | grep -v grep | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | xargs <span class="built_in">kill</span> -9</span><br><span class="line"></span><br><span class="line"><span class="built_in">sleep</span> 0.5</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&#x27;\n----------check if the kill action is correct----------&#x27;</span></span><br><span class="line"></span><br><span class="line">/home/zishuq/djgPro/venv/bin/uwsgi --ini uwsgi.ini &amp; &gt;/dev/null</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&#x27;\n\033[42;1m--------------------started...--------------------\033[0m&#x27;</span></span><br><span class="line"><span class="built_in">sleep</span> 1</span><br><span class="line"></span><br><span class="line">ps -ef |grep uwsgi.ini | grep -v grep</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> 755 reboot.sh</span><br><span class="line">./reboot.sh</span><br></pre></td></tr></table></figure>
+
+<p>停止脚本 stop.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/usr/bin/env bash</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;\033[34m--------------------wsgi process--------------------\033[0m&quot;</span></span><br><span class="line"></span><br><span class="line">ps -ef |grep uwsgi.ini | grep -v grep</span><br><span class="line"></span><br><span class="line"><span class="built_in">sleep</span> 0.5</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&#x27;\n--------------------going to close--------------------&#x27;</span></span><br><span class="line"></span><br><span class="line">ps -ef |grep uwsgi.ini | grep -v grep | awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | xargs <span class="built_in">kill</span> -9</span><br><span class="line"></span><br><span class="line"><span class="built_in">sleep</span> 0.5</span><br></pre></td></tr></table></figure>
+
+<h1 id="配置MySQL"><a href="#配置MySQL" class="headerlink" title="配置MySQL"></a>配置MySQL</h1><p><a target="_blank" rel="noopener" href="https://www.notion.so/MySQL-bd70921f223346c6953ba53ad3defe73?pvs=21"><strong>MySQL</strong></a></p>
+<h1 id="配置Redis"><a href="#配置Redis" class="headerlink" title="配置Redis"></a>配置Redis</h1><p><a target="_blank" rel="noopener" href="https://www.notion.so/Redis-22c491b6dad349a687ee5f46d3e744a0?pvs=21">Redis</a> </p>
+<h1 id="域名和Https"><a href="#域名和Https" class="headerlink" title="域名和Https"></a>域名和Https</h1><p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306301313687.png" alt="Untitled"></p>
+<p><a target="_blank" rel="noopener" href="https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html">https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zishuq.github.io">zishuQ</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zishuq.github.io/article/Python/Django/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/">https://zishuq.github.io/article/Python/Django/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zishuq.github.io" target="_blank">zishuQ's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/web/">web</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/Python/Django/Django%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/Django%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/" title="Django基础内容"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Django基础内容</div></div></a></div><div class="next-post pull-right"><a href="/article/Python/Django/Django%E5%BC%80%E5%8F%91%E5%AE%9E%E4%BE%8B/Django%E5%BC%80%E5%8F%91/" title="Django开发实例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Django开发实例</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/article/Python/Flask/Flask/" title="Flask"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">Flask</div></div></a></div><div><a href="/article/Python/Django/Django%E5%BC%80%E5%8F%91%E5%AE%9E%E4%BE%8B/Django%E5%BC%80%E5%8F%91/" title="Django开发实例"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">Django开发实例</div></div></a></div><div><a href="/article/Python/pandas%E5%8A%9E%E5%85%AC%E8%A1%A8%E6%A0%BC%E5%A4%84%E7%90%86/pandas/" title="pandas办公表格处理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">pandas办公表格处理</div></div></a></div><div><a href="/article/Python/Django/Django%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/Django%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9/" title="Django基础内容"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">Django基础内容</div></div></a></div><div><a href="/article/Python/Django/%E6%80%BB%E7%BB%93%E5%9B%9E%E9%A1%BE/%E6%80%BB%E7%BB%93%E5%9B%9E%E9%A1%BE/" title="总结回顾"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-06-30</div><div class="title">总结回顾</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zishuQ</div><div class="author-info__description">用于记录学习内容的个人博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zishuQ" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zishuq77@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2"><span class="toc-number">1.</span> <span class="toc-text">Web项目部署</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%B4%AD%E4%B9%B0%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">1. 购买云服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83"><span class="toc-number">3.</span> <span class="toc-text">2. 创建虚拟环境</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%8E%AF%E5%A2%83uwsgi"><span class="toc-number">4.</span> <span class="toc-text">3.环境uwsgi</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Nginx%E9%85%8D%E7%BD%AE"><span class="toc-number">5.</span> <span class="toc-text">Nginx配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85"><span class="toc-number">5.1.</span> <span class="toc-text">1. 安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E9%85%8D%E7%BD%AE"><span class="toc-number">5.2.</span> <span class="toc-text">2. 配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%90%AF%E5%8A%A8Nginx%E5%92%8CuWSGI"><span class="toc-number">5.3.</span> <span class="toc-text">3. 启动Nginx和uWSGI</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E8%AE%BF%E9%97%AE"><span class="toc-number">5.4.</span> <span class="toc-text">4. 访问</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%87%8D%E5%90%AF%E8%84%9A%E6%9C%AC"><span class="toc-number">6.</span> <span class="toc-text">重启脚本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEMySQL"><span class="toc-number">7.</span> <span class="toc-text">配置MySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%85%8D%E7%BD%AERedis"><span class="toc-number">8.</span> <span class="toc-text">配置Redis</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%9F%E5%90%8D%E5%92%8CHttps"><span class="toc-number">9.</span> <span class="toc-text">域名和Https</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/hello-world/" title="Hello World">Hello World</a><time datetime="2023-07-30T23:33:33.900Z" title="发表于 2023-07-31 07:33:33">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/Web%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" title="Web后端开发">Web后端开发</a><time datetime="2023-07-30T23:16:03.000Z" title="发表于 2023-07-31 07:16:03">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%85%A5%E9%97%A8/Web%E5%85%A5%E9%97%A8/" title="Web入门">Web入门</a><time datetime="2023-07-30T02:27:55.000Z" title="发表于 2023-07-30 10:27:55">2023-07-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Maven/Maven/" title="Maven">Maven</a><time datetime="2023-07-29T08:13:22.000Z" title="发表于 2023-07-29 16:13:22">2023-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/" title="前端工程">前端工程</a><time datetime="2023-07-28T02:51:38.000Z" title="发表于 2023-07-28 10:51:38">2023-07-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By zishuQ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"scriptForm":"local","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>

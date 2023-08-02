@@ -1,0 +1,264 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CGI 补充内容 | zishuQ's blog</title><meta name="author" content="zishuQ"><meta name="copyright" content="zishuQ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="CGI的运行原理当用户在网页上发出一个请求，比如点击一个链接或提交一个表单，请求的URL会指向一个服务器上的CGI脚本。服务器会根据URL中的参数和请求方法，将一些信息传递给CGI脚本，比如查询字符串、内容长度、请求方法等，这些信息通常通过环境变量或命令行参数传递。服务器还会将请求的主体部分，比如表单数据，通过标准输入流传递给CGI脚本。CGI脚本会根据接收到的信息进行相应的处理，比如查询数据库、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CGI 补充内容">
+<meta property="og:url" content="https://zishuq.github.io/article/web/CGI/CGI-%E8%A1%A5%E5%85%85%E5%86%85%E5%AE%B9/%E8%AF%A6%E7%BB%86%E5%86%85%E5%AE%B9/index.html">
+<meta property="og:site_name" content="zishuQ&#39;s blog">
+<meta property="og:description" content="CGI的运行原理当用户在网页上发出一个请求，比如点击一个链接或提交一个表单，请求的URL会指向一个服务器上的CGI脚本。服务器会根据URL中的参数和请求方法，将一些信息传递给CGI脚本，比如查询字符串、内容长度、请求方法等，这些信息通常通过环境变量或命令行参数传递。服务器还会将请求的主体部分，比如表单数据，通过标准输入流传递给CGI脚本。CGI脚本会根据接收到的信息进行相应的处理，比如查询数据库、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg">
+<meta property="article:published_time" content="2023-06-30T09:46:54.000Z">
+<meta property="article:modified_time" content="2023-07-27T03:14:56.000Z">
+<meta property="article:author" content="zishuQ">
+<meta property="article:tag" content="zishuQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="canonical" href="https://zishuq.github.io/article/web/CGI/CGI-%E8%A1%A5%E5%85%85%E5%86%85%E5%AE%B9/%E8%AF%A6%E7%BB%86%E5%86%85%E5%AE%B9/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CGI 补充内容',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-07-27 11:14:56'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302205350.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="zishuQ's blog"><img class="site-icon" src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"/><span class="site-name">zishuQ's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">CGI 补充内容</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-06-30T09:46:54.000Z" title="发表于 2023-06-30 17:46:54">2023-06-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-07-27T03:14:56.000Z" title="更新于 2023-07-27 11:14:56">2023-07-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web/">web</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web/CGI/">CGI</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web/CGI/CGI-%E8%A1%A5%E5%85%85%E5%86%85%E5%AE%B9/">CGI 补充内容</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="CGI 补充内容"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="CGI的运行原理"><a href="#CGI的运行原理" class="headerlink" title="CGI的运行原理"></a>CGI的运行原理</h1><p>当用户在网页上发出一个请求，比如点击一个链接或提交一个表单，请求的URL会指向一个服务器上的CGI脚本。服务器会根据URL中的参数和请求方法，将一些信息传递给CGI脚本，比如查询字符串、内容长度、请求方法等，这些信息通常通过环境变量或命令行参数传递。服务器还会将请求的主体部分，比如表单数据，通过标准输入流传递给CGI脚本。CGI脚本会根据接收到的信息进行相应的处理，比如查询数据库、生成动态内容等，并将处理结果通过标准输出流返回给服务器。返回的结果必须包含一个合法的HTTP头部，指明内容类型、状态码等信息，然后是一个空行，再然后是实际的内容，比如HTML页面、图片数据等。服务器会将CGI脚本的输出作为响应发送给用户。</p>
+<h1 id="运用CGI的例子"><a href="#运用CGI的例子" class="headerlink" title="运用CGI的例子"></a>运用CGI的例子</h1><p>一个简单的计数器脚本，它可以显示网页被访问的次数。这个脚本可以用C语言或Perl语言编写，并放在服务器的cgi-bin目录下。当用户请求这个脚本的URL时，服务器会执行这个脚本，并将其输出返回给用户。输出是一个包含计数器值的HTML页面，每次访问都会增加一。这个脚本需要一个文本文件来存储计数器值，并在每次执行时读取和更新这个文件。</p>
+<h1 id="CGI可能存在的安全漏洞"><a href="#CGI可能存在的安全漏洞" class="headerlink" title="CGI可能存在的安全漏洞"></a>CGI可能存在的安全漏洞</h1><p>产生原因：由于用户输入没有被正确地解析或过滤，导致攻击者可以通过网页URL传递一些参数或命令，从而执行一些恶意的操作。列举如下：</p>
+<ul>
+<li>利用CGI脚本的权限，访问或修改服务器上的敏感文件或数据</li>
+<li>利用CGI脚本的内存问题，注入或执行一些恶意的代码</li>
+<li>利用CGI脚本的输入验证问题，传递一些非法或危险的数据，造成服务器的崩溃或拒绝服务。 为了避免这些漏洞，你在使用CGI的时候应该注意以下几点：</li>
+<li>限制CGI脚本的权限，不要让它们以root用户或其他高权限用户运行。</li>
+<li>管理好CGI脚本的内存分配和释放，避免内存泄露或溢出。</li>
+<li>对用户输入进行严格的验证和过滤，防止SQL注入、跨站脚本、命令执行等攻击。</li>
+</ul>
+<h1 id="CGI的优缺点"><a href="#CGI的优缺点" class="headerlink" title="CGI的优缺点"></a>CGI的优缺点</h1><p>CGI的优点有：</p>
+<ul>
+<li>CGI是一个非常明确和支持良好的标准，可以用任何语言和平台编写CGI程序，只要符合规范。</li>
+<li>CGI可以实现网页和外部程序或数据库的交互，提供动态内容和功能。</li>
+<li>CGI有很多现成的代码和框架，可以方便地实现一些常见的任务，比如计数器、表单处理、访问控制等。</li>
+</ul>
+<p>CGI的缺点有：</p>
+<ul>
+<li>CGI每次处理请求时都需要启动一个新的进程，占用服务器的内存和资源，效率低下。</li>
+<li>CGI不能很好地在内存中缓存数据，每次都需要打开或关闭数据库连接，速度慢。</li>
+<li>CGI需要对用户输入进行严格的验证和过滤，否则可能会遭受SQL注入、跨站脚本、命令执行等攻击。</li>
+</ul>
+<h1 id="CGI的横向对比"><a href="#CGI的横向对比" class="headerlink" title="CGI的横向对比"></a>CGI的横向对比</h1><h2 id="实现服务端和客户端交互的其他方式"><a href="#实现服务端和客户端交互的其他方式" class="headerlink" title="实现服务端和客户端交互的其他方式"></a>实现服务端和客户端交互的其他方式</h2><ul>
+<li>Servlet：一种基于Java的技术，可以在服务器上运行Java程序，比CGI更快、更稳定、更安全。</li>
+<li>ASP：一种基于Microsoft的技术，可以在服务器上运行VBScript或JScript程序，提供了丰富的组件和功能。</li>
+<li>PHP：一种基于开源的技术，可以在服务器上运行PHP程序，支持多种数据库和平台，易于学习和使用。</li>
+</ul>
+<h2 id="CGI和其他技术的区别"><a href="#CGI和其他技术的区别" class="headerlink" title="CGI和其他技术的区别"></a>CGI和其他技术的区别</h2><ul>
+<li>CGI是一种协议，而不是一种语言，它可以用任何语言和平台实现，只要符合规范。其他技术，比如Servlet、ASP、PHP等，都是基于特定的语言或平台的技术，有自己的语法和特性。</li>
+<li>CGI每次处理请求时都需要启动一个新的进程，占用服务器的内存和资源，效率低下。其他技术，比如Servlet、ASP、PHP等，都是在服务器上运行一个持久的程序，可以在内存中缓存数据和连接，速度快。</li>
+<li>CGI需要对用户输入进行严格的验证和过滤，否则可能会遭受SQL注入、跨站脚本、命令执行等攻击。其他技术，比如Servlet、ASP、PHP等，都提供了一些内置的函数或组件，可以方便地处理用户输入和输出，提高安全性。</li>
+<li>CGI有很多现成的代码和框架，可以方便地实现一些常见的任务，比如计数器、表单处理、访问控制等。其他技术，比如Servlet、ASP、PHP等，也有很多成熟的库和框架，可以提供更多的功能和扩展性。</li>
+</ul>
+<h1 id="CGI在现在的网页开发中还有一定的用处，但已经不是主流的技术了。"><a href="#CGI在现在的网页开发中还有一定的用处，但已经不是主流的技术了。" class="headerlink" title="CGI在现在的网页开发中还有一定的用处，但已经不是主流的技术了。"></a>CGI在现在的网页开发中还有一定的用处，但已经不是主流的技术了。</h1><h2 id="CGI的用处主要有以下几点："><a href="#CGI的用处主要有以下几点：" class="headerlink" title="CGI的用处主要有以下几点："></a>CGI的用处主要有以下几点：</h2><ul>
+<li>CGI可以实现一些简单的动态内容和功能，比如计数器、表单处理、访问控制等，不需要安装或配置复杂的服务器或框架。</li>
+<li>CGI可以用任何语言和平台实现，只要符合规范，可以充分利用现有的代码和资源，也可以学习一些新的语言或技术。</li>
+<li>CGI可以作为一种学习和实验的工具，了解网页和服务器之间的交互原理和过程，以及一些安全和性能的问题和解决方法。</li>
+</ul>
+<h2 id="CGI已经不是主流的技术的原因主要有以下几点："><a href="#CGI已经不是主流的技术的原因主要有以下几点：" class="headerlink" title="CGI已经不是主流的技术的原因主要有以下几点："></a>CGI已经不是主流的技术的原因主要有以下几点：</h2><ul>
+<li>CGI每次处理请求时都需要启动一个新的进程，占用服务器的内存和资源，效率低下，不能满足高并发和高性能的需求。</li>
+<li>CGI不能很好地在内存中缓存数据和连接，每次都需要打开或关闭数据库连接，速度慢，也容易出现错误或冲突。</li>
+<li>CGI需要对用户输入进行严格的验证和过滤，否则可能会遭受SQL注入、跨站脚本、命令执行等攻击，这些攻击已经非常普遍和危险。</li>
+<li>CGI有很多现成的代码和框架，但也有很多过时或不兼容的代码和框架，需要花费时间和精力去选择和维护。</li>
+</ul>
+<h1 id="CGI的框架"><a href="#CGI的框架" class="headerlink" title="CGI的框架"></a>CGI的框架</h1><ul>
+<li>CGI::Framework：一个用Perl语言编写的轻量级的CGI框架，提供了一些基本的功能，如参数验证、会话管理、错误处理等。</li>
+<li>Web.py：一个用Python语言编写的简单而强大的CGI框架，提供了一些高级的功能，如模板系统、数据库访问、缓存机制等。</li>
+<li>Sinatra：一个用Ruby语言编写的极简主义的CGI框架，提供了一种优雅而灵活的方式来定义路由和处理请求。</li>
+</ul>
+<h1 id="CGI的实例"><a href="#CGI的实例" class="headerlink" title="CGI的实例"></a>CGI的实例</h1><p>Web.py的例子，这是一个用Python语言编写的CGI框架。假设你想用这个框架来实现一个简单的留言板功能，你需要做以下几个步骤：</p>
+<ul>
+<li>在你的服务器上创建一个cgi-bin目录，这是存放CGI脚本的地方。</li>
+<li>在cgi-bin目录下创建一个guestbook.py文件，这是你的主要的CGI脚本，它的内容如下：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">import</span> web <span class="comment"># import the web.py module</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define the URLs and their corresponding classes</span></span><br><span class="line">urls = (</span><br><span class="line">    <span class="string">&#x27;/&#x27;</span>, <span class="string">&#x27;show_messages&#x27;</span>, <span class="comment"># show the messages on the guestbook</span></span><br><span class="line">    <span class="string">&#x27;/add&#x27;</span>, <span class="string">&#x27;add_message&#x27;</span>, <span class="comment"># add a new message to the guestbook</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># define the template for rendering the HTML pages</span></span><br><span class="line">render = web.template.render(<span class="string">&#x27;templates/&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># define the class for showing the messages</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">show_messages</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">GET</span>(<span class="params">self</span>): <span class="comment"># define the GET method</span></span><br><span class="line">        messages = self.get_messages() <span class="comment"># get the messages from the data file</span></span><br><span class="line">        <span class="keyword">return</span> render.show(messages) <span class="comment"># render the show.html template with the messages</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_messages</span>(<span class="params">self</span>): <span class="comment"># define a helper method to get the messages</span></span><br><span class="line">        messages = [] <span class="comment"># create an empty list to store the messages</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data/guestbook.txt&#x27;</span>) <span class="keyword">as</span> f: <span class="comment"># open the data file</span></span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> f: <span class="comment"># iterate over each line in the file</span></span><br><span class="line">                name, message, timestamp = line.strip().split(<span class="string">&#x27;|&#x27;</span>) <span class="comment"># split the line by &#x27;|&#x27;</span></span><br><span class="line">                messages.append((name, message, timestamp)) <span class="comment"># append a tuple of name, message and timestamp to the list</span></span><br><span class="line">        <span class="keyword">return</span> messages <span class="comment"># return the list of messages</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># define the class for adding a new message</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">add_message</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">POST</span>(<span class="params">self</span>): <span class="comment"># define the POST method</span></span><br><span class="line">        i = web.<span class="built_in">input</span>() <span class="comment"># get the user input from the web form</span></span><br><span class="line">        name = i.get(<span class="string">&#x27;name&#x27;</span>) <span class="comment"># get the name from the user input</span></span><br><span class="line">        message = i.get(<span class="string">&#x27;message&#x27;</span>) <span class="comment"># get the message from the user input</span></span><br><span class="line">        self.validate(name, message) <span class="comment"># validate the name and message</span></span><br><span class="line">        self.add_message(name, message) <span class="comment"># add the name and message to the data file</span></span><br><span class="line">        <span class="keyword">raise</span> web.seeother(<span class="string">&#x27;/&#x27;</span>) <span class="comment"># redirect to the home page</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">validate</span>(<span class="params">self, name, message</span>): <span class="comment"># define a helper method to validate the name and message</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> name <span class="keyword">or</span> <span class="keyword">not</span> message: <span class="comment"># if either name or message is empty</span></span><br><span class="line">            <span class="keyword">raise</span> web.badrequest(<span class="string">&quot;Please enter your name and message&quot;</span>) <span class="comment"># raise a bad request error</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add_message</span>(<span class="params">self, name, message</span>): <span class="comment"># define a helper method to add the name and message to the data file</span></span><br><span class="line">        <span class="keyword">import</span> time <span class="comment"># import the time module</span></span><br><span class="line">        timestamp = <span class="built_in">int</span>(time.time()) <span class="comment"># get the current timestamp as an integer</span></span><br><span class="line">        <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;data/guestbook.txt&#x27;</span>, <span class="string">&#x27;a&#x27;</span>) <span class="keyword">as</span> f: <span class="comment"># open the data file in append mode</span></span><br><span class="line">            f.write(<span class="string">f&#x27;<span class="subst">&#123;name&#125;</span>|<span class="subst">&#123;message&#125;</span>|<span class="subst">&#123;timestamp&#125;</span>\n&#x27;</span>) <span class="comment"># write a line with name, message and timestamp separated by &#x27;|&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># create a new web application with the URLs and classes</span></span><br><span class="line">app = web.application(urls, <span class="built_in">globals</span>())</span><br><span class="line"></span><br><span class="line"><span class="comment"># run the application if this file is executed as a script</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在cgi-bin目录下创建一个templates文件夹，这是用来存放HTML模板的文件夹。</li>
+<li>在templates文件夹下创建一个base.html文件，这是用来定义HTML页面的基本结构的文件，它的内容如下：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$def with (title)</span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>$title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    $:content()</span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在templates文件夹下创建一个add.html文件，这是用来显示添加留言成功的文件，它的内容如下：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$def with ()</span><br><span class="line">$var title: Guestbook</span><br><span class="line"></span><br><span class="line">$extends(&#x27;base.html&#x27;)</span><br><span class="line"></span><br><span class="line">$def content():</span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Guestbook<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span>Your message has been added.<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;/&quot;</span>&gt;</span>Go back to the guestbook<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在cgi-bin目录下创建一个data文件夹，这是用来存放留言数据的文件夹。</li>
+<li>在data文件夹下创建一个guestbook.txt文件，这是用来存放留言数据的文本文件，它的内容可以为空或者有一些示例数据，每一行代表一条留言，格式为：姓名|留言内容|时间戳。例如：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Alice|Hello world!|1639566000</span><br><span class="line">Bob|Nice to meet you!|1639566600</span><br><span class="line">Charlie|Happy holidays!|1639567200</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>为了让你的CGI脚本可以被服务器执行，你需要给它赋予可执行权限，比如在Linux系统下，你可以使用chmod命令：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod +x guestbook.py</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>现在你可以在浏览器中访问你的CGI脚本的URL，比如<a target="_blank" rel="noopener" href="http://localhost/cgi-bin/guestbook.py%EF%BC%8C%E4%BD%A0%E5%B0%B1%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E4%BD%A0%E7%9A%84%E7%95%99%E8%A8%80%E6%9D%BF%E9%A1%B5%E9%9D%A2%E4%BA%86%E3%80%82%E4%BD%A0%E4%B9%9F%E5%8F%AF%E4%BB%A5%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%9A%84%E7%95%99%E8%A8%80%EF%BC%8C%E6%88%96%E8%80%85%E5%88%B7%E6%96%B0%E9%A1%B5%E9%9D%A2%E7%9C%8B%E5%88%B0%E5%85%B6%E4%BB%96%E4%BA%BA%E7%9A%84%E7%95%99%E8%A8%80%E3%80%82">http://localhost/cgi-bin/guestbook.py，你就可以看到你的留言板页面了。你也可以添加新的留言，或者刷新页面看到其他人的留言。</a></li>
+</ul>
+<h1 id="各种语言对CGI的实现"><a href="#各种语言对CGI的实现" class="headerlink" title="各种语言对CGI的实现"></a>各种语言对CGI的实现</h1><p>主要是遵循CGI的协议和标准，通过和服务器交换一些特定的环境变量和数据，来实现动态内容的生成和返回。比如说：</p>
+<ul>
+<li>Java：可以使用Java Servlet技术来实现CGI，Servlet是一种运行在服务器上的Java程序，可以接收和处理客户端的请求，生成动态的HTML页面或其他类型的文档。Servlet可以使用Java的标准库或第三方的库来访问数据库或其他服务器。Servlet也可以使用JSP（Java Server Pages）技术来简化HTML页面的生成。</li>
+<li>Python：可以使用Python的标准库中的cgi模块来实现CGI，cgi模块提供了一些类和函数来处理客户端的请求，获取表单数据，输出HTTP头部和内容等。Python也有很多第三方的框架或库来简化CGI开发，比如Web.py、Flask、Django等。</li>
+<li>PHP：可以使用PHP的内置功能来实现CGI，PHP是一种专门用于网页开发的语言，它可以嵌入到HTML页面中，或者作为一个独立的脚本运行。PHP可以直接获取客户端的请求数据，输出HTTP头部和内容，以及访问数据库或其他服务器。PHP也有很多第三方的框架或库来简化CGI开发，比如Laravel、Symfony、CodeIgniter等。</li>
+</ul>
+<h1 id="CGI的漏洞"><a href="#CGI的漏洞" class="headerlink" title="CGI的漏洞"></a>CGI的漏洞</h1><p>有一些关于CGI的CVE漏洞，比如：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2021-41773">CVE-2021-41773：一个影响Apache HTTP Server 2.4.49版本的漏洞，利用路径规范化的变化，可以实现路径遍历攻击，将URL映射到Alias-like指令配置之外的文件。如果这些文件没有受到默认配置的保护，这些请求可以成功。如果这些路径也启用了CGI脚本，这可能导致远程代码执行。这个漏洞已经被在野利用。Apache HTTP Server 2.4.50版本的修复也不完整，参见CVE-2021-42013<strong>1</strong></a>。</li>
+<li><a target="_blank" rel="noopener" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-2021">CVE-2021-2021：一个影响Oracle MySQL Server 8.0.22及之前版本的漏洞，位于Server: Optimizer组件。高权限的攻击者可以通过多种协议的网络访问来攻击MySQL Server。成功的攻击可以导致MySQL Server挂起或频繁崩溃<strong>2</strong></a>。</li>
+<li><a target="_blank" rel="noopener" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-22204">CVE-2021-22204：一个影响ExifTool的漏洞，位于DjVu模块。当解析一个恶意的图像时，可以实现任意代码执行。这个漏洞影响了ExifTool 7.44及之前版本<strong>3</strong></a>。</li>
+<li><a target="_blank" rel="noopener" href="https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=nginx">CVE-2022-31126：一个影响Roxy-wi的漏洞，Roxy-wi是一个用于管理Haproxy, Nginx, Apache和Keepalived服务器的开源Web界面。攻击者可以通过向&#x2F;app&#x2F;options.py文件发送一个特制的HTTP请求来实现代码执行。这个漏洞影响了Roxy-wi 6.1.1.0之前的版本<strong>4</strong></a>。 如果你想了解更多关于CGI的CVE漏洞的信息，你可以访问以下英文网站：</li>
+<li>NVD - CVE-2021-41773 - NIST**<a target="_blank" rel="noopener" href="https://nvd.nist.gov/vuln/detail/CVE-2021-41773">1</a>**：一个介绍CVE-2021-41773漏洞的网页，提供了漏洞描述、严重程度、修复信息、参考链接等信息。</li>
+<li><a target="_blank" rel="noopener" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-2021">CVE - CVE-2021-2021 - Common Vulnerabilities and Exposures<strong>2</strong></a>：一个介绍CVE-2021-2021漏洞的网页，提供了漏洞描述、参考链接等信息。</li>
+<li>CVE - CVE-2021-22204 - Common Vulnerabilities and Exposures**<a target="_blank" rel="noopener" href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-22204">3</a>**：一个介绍CVE-2021-22204漏洞的网页，提供了漏洞描述、参考链接等信息。</li>
+<li>CVE - Search Results - Common Vulnerabilities and Exposures**<a target="_blank" rel="noopener" href="https://cve.mitre.org/cgi-bin/cvekey.cgi?keyword=nginx">4</a>**：一个搜索CGI相关CVE漏洞的网页，提供了多个CVE漏洞的标题、摘要和链接。</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zishuq.github.io">zishuQ</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zishuq.github.io/article/web/CGI/CGI-%E8%A1%A5%E5%85%85%E5%86%85%E5%AE%B9/%E8%AF%A6%E7%BB%86%E5%86%85%E5%AE%B9/">https://zishuq.github.io/article/web/CGI/CGI-%E8%A1%A5%E5%85%85%E5%86%85%E5%AE%B9/%E8%AF%A6%E7%BB%86%E5%86%85%E5%AE%B9/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zishuq.github.io" target="_blank">zishuQ's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/%E6%9D%82%E7%B1%BB/Git/Git-%E4%BD%BF%E7%94%A8/Git-%E6%96%B0%E6%80%BB%E7%BB%93/" title="Git 使用"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Git 使用</div></div></a></div><div class="next-post pull-right"><a href="/article/%E6%9D%82%E7%B1%BB/Git/Git%E7%9F%A5%E8%AF%86/Git-%E6%97%A7%E6%80%BB%E7%BB%93/" title="Git知识"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Git知识</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zishuQ</div><div class="author-info__description">用于记录学习内容的个人博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">57</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">54</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zishuQ" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zishuq77@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CGI%E7%9A%84%E8%BF%90%E8%A1%8C%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">CGI的运行原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E7%94%A8CGI%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="toc-number">2.</span> <span class="toc-text">运用CGI的例子</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CGI%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E7%9A%84%E5%AE%89%E5%85%A8%E6%BC%8F%E6%B4%9E"><span class="toc-number">3.</span> <span class="toc-text">CGI可能存在的安全漏洞</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CGI%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text">CGI的优缺点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CGI%E7%9A%84%E6%A8%AA%E5%90%91%E5%AF%B9%E6%AF%94"><span class="toc-number">5.</span> <span class="toc-text">CGI的横向对比</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E6%9C%8D%E5%8A%A1%E7%AB%AF%E5%92%8C%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BA%A4%E4%BA%92%E7%9A%84%E5%85%B6%E4%BB%96%E6%96%B9%E5%BC%8F"><span class="toc-number">5.1.</span> <span class="toc-text">实现服务端和客户端交互的其他方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CGI%E5%92%8C%E5%85%B6%E4%BB%96%E6%8A%80%E6%9C%AF%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.2.</span> <span class="toc-text">CGI和其他技术的区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CGI%E5%9C%A8%E7%8E%B0%E5%9C%A8%E7%9A%84%E7%BD%91%E9%A1%B5%E5%BC%80%E5%8F%91%E4%B8%AD%E8%BF%98%E6%9C%89%E4%B8%80%E5%AE%9A%E7%9A%84%E7%94%A8%E5%A4%84%EF%BC%8C%E4%BD%86%E5%B7%B2%E7%BB%8F%E4%B8%8D%E6%98%AF%E4%B8%BB%E6%B5%81%E7%9A%84%E6%8A%80%E6%9C%AF%E4%BA%86%E3%80%82"><span class="toc-number">6.</span> <span class="toc-text">CGI在现在的网页开发中还有一定的用处，但已经不是主流的技术了。</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#CGI%E7%9A%84%E7%94%A8%E5%A4%84%E4%B8%BB%E8%A6%81%E6%9C%89%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%82%B9%EF%BC%9A"><span class="toc-number">6.1.</span> <span class="toc-text">CGI的用处主要有以下几点：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#CGI%E5%B7%B2%E7%BB%8F%E4%B8%8D%E6%98%AF%E4%B8%BB%E6%B5%81%E7%9A%84%E6%8A%80%E6%9C%AF%E7%9A%84%E5%8E%9F%E5%9B%A0%E4%B8%BB%E8%A6%81%E6%9C%89%E4%BB%A5%E4%B8%8B%E5%87%A0%E7%82%B9%EF%BC%9A"><span class="toc-number">6.2.</span> <span class="toc-text">CGI已经不是主流的技术的原因主要有以下几点：</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CGI%E7%9A%84%E6%A1%86%E6%9E%B6"><span class="toc-number">7.</span> <span class="toc-text">CGI的框架</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CGI%E7%9A%84%E5%AE%9E%E4%BE%8B"><span class="toc-number">8.</span> <span class="toc-text">CGI的实例</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%84%E7%A7%8D%E8%AF%AD%E8%A8%80%E5%AF%B9CGI%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">9.</span> <span class="toc-text">各种语言对CGI的实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#CGI%E7%9A%84%E6%BC%8F%E6%B4%9E"><span class="toc-number">10.</span> <span class="toc-text">CGI的漏洞</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/hello-world/" title="Hello World">Hello World</a><time datetime="2023-07-30T23:33:33.900Z" title="发表于 2023-07-31 07:33:33">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/Web%E5%90%8E%E7%AB%AF%E5%BC%80%E5%8F%91/" title="Web后端开发">Web后端开发</a><time datetime="2023-07-30T23:16:03.000Z" title="发表于 2023-07-31 07:16:03">2023-07-31</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Web%E5%85%A5%E9%97%A8/Web%E5%85%A5%E9%97%A8/" title="Web入门">Web入门</a><time datetime="2023-07-30T02:27:55.000Z" title="发表于 2023-07-30 10:27:55">2023-07-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/Maven/Maven/" title="Maven">Maven</a><time datetime="2023-07-29T08:13:22.000Z" title="发表于 2023-07-29 16:13:22">2023-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/Java%E5%BC%80%E5%8F%91/JavaWeb/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/%E5%89%8D%E7%AB%AF%E5%B7%A5%E7%A8%8B/" title="前端工程">前端工程</a><time datetime="2023-07-28T02:51:38.000Z" title="发表于 2023-07-28 10:51:38">2023-07-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By zishuQ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"scriptForm":"local","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
