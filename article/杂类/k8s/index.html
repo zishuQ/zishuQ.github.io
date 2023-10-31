@@ -1,0 +1,335 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>k8s | zishuQ's blog</title><meta name="author" content="zishuQ"><meta name="copyright" content="zishuQ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="简介Kubernetes 是一个开源的容器编排引擎和容器集群管理工具，用来对容器化应用进行自动化部署、扩缩和管理。 Kubernetes 这个名字源于希腊语，意为“舵手”或“飞行员”。 k8s 这个缩写是因为 k 和 s之间有 8 个字符。 Google 在 2014 年开源了Kubernetes 项目。 Kubernetes 建立在 Google 大规模运行生产工作负载十几年经验的基础上，结合了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="k8s">
+<meta property="og:url" content="https://zishuq.github.io/article/%E6%9D%82%E7%B1%BB/k8s/index.html">
+<meta property="og:site_name" content="zishuQ&#39;s blog">
+<meta property="og:description" content="简介Kubernetes 是一个开源的容器编排引擎和容器集群管理工具，用来对容器化应用进行自动化部署、扩缩和管理。 Kubernetes 这个名字源于希腊语，意为“舵手”或“飞行员”。 k8s 这个缩写是因为 k 和 s之间有 8 个字符。 Google 在 2014 年开源了Kubernetes 项目。 Kubernetes 建立在 Google 大规模运行生产工作负载十几年经验的基础上，结合了">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg">
+<meta property="article:published_time" content="2023-10-17T13:24:00.000Z">
+<meta property="article:modified_time" content="2023-10-30T06:58:08.442Z">
+<meta property="article:author" content="zishuQ">
+<meta property="article:tag" content="k8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="canonical" href="https://zishuq.github.io/article/%E6%9D%82%E7%B1%BB/k8s/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'k8s',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-30 14:58:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">64</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">57</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302205350.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="zishuQ's blog"><img class="site-icon" src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"/><span class="site-name">zishuQ's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">k8s</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-10-17T13:24:00.000Z" title="发表于 2023-10-17 21:24:00">2023-10-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2023-10-30T06:58:08.442Z" title="更新于 2023-10-30 14:58:08">2023-10-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%9D%82%E7%B1%BB/">杂类</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="k8s"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>Kubernetes 是一个开源的容器编排引擎和容器集群管理工具，用来对容器化应用进行自动化部署、扩缩和管理。</p>
+<p>Kubernetes 这个名字源于希腊语，意为“舵手”或“飞行员”。 k8s 这个缩写是因为 k 和 s之间有 8 个字符。 Google 在 2014 年开源了Kubernetes 项目。</p>
+<p>Kubernetes 建立在 Google 大规模运行生产工作负载十几年经验的基础上，结合了社区中最优秀的想法和实践。它之所以能够迅速流行起来，是因为它的许多功能高度契合互耳关网大厂的部署和运维需求。</p>
+<p>Kubernetes 可以提供：</p>
+<ul>
+<li>服务发现和负载均衡<br>Kubernetes 可以使用 DNS 名称或自己的 IP 地址来曝露容器。如果进入容器的流量很大 Kubernetes 可以负载均衡并分配网络流量，从而使部署稳定。</li>
+<li>存储编排<br>Kubernetes 允许你自动挂载你选择的存储系统，例如本地存储、公共云提供商等。</li>
+<li>自动部署和回滚<br>你可以使用 Kubernetes 描述已部署容器的所需状态，它可以以受控的速率将实际状态更改为期望状态。例如，你可以自动化Kubernetes 来为你的部署创建新容器，删除现有容器并将它们的所有资源用于新容器。也可以是方便的实现金丝雀部署(canary deployment）。</li>
+<li>自动完成装箱计算<br>你为 Kubernetes 提供许多节点组成的集群，在这个集群上运行容器化的任务。你告诉 Kubernetes 每个容器需要多少 CPU 和内存 (RAM)。Kubernetes 可以将这些容器按实际情况调度到你的节点上，以最佳方式利用你的资源。</li>
+<li>自我修复<br>Kubernetes 将重新启动失败的容器、替换容器、杀死不响应用户定义的运行状况检查的容器，并且在准备好服务之前不将其通告给客户端。</li>
+<li>密钥与配置管理Kubernetes 允许你存储和管理敏感信息，例如密码、 OAuth 令牌和 ssh 密钥。你可以在不重建容器镜像的情况下部署和更新密钥和应用程序配置，也无需在堆栈配置中暴露密钥。</li>
+</ul>
+<h2 id="云原生"><a href="#云原生" class="headerlink" title="云原生"></a>云原生</h2><p>2015 年由 Google 、Redhat 等大型云计算厂商以及一些开源公司共同牵头成立了 CloudNative Computing Foundation （云原生计算基金会）云原生计算基金会 (CNCF) 致力于培育和维护一个厂商中立的开源生态系统，来推广云原生技术。云原生的概念从此广泛传播。</p>
+<h3 id="云原生定义"><a href="#云原生定义" class="headerlink" title="云原生定义"></a>云原生定义</h3><p>Kubernetes 是 CNCF 托管的第一个开源项目。因此现在提到云原生，往往我们都把它与kubernetes 联系起来。</p>
+<ul>
+<li>通俗解释<br>使用 Java 、Go 、PHP 、Python 等语言开发的应用我们称之为原生应用，在设计和开发这些应用时，使他们能够运行在云基础设施（或 kubernetes ）上，从而使应用具备可弹性扩展的能力，我们称之为云原生应用。我们可以将云原生理解为以容器技术为载体、基于微服务架构思想的一套技术体系和方法论。</li>
+</ul>
+<h1 id="kubernetes-架构"><a href="#kubernetes-架构" class="headerlink" title="kubernetes 架构"></a>kubernetes 架构</h1><p>一个 Kubernetes 集群至少包含一个控制平面 (control plane), 以及一个或多个工作节点(worker node)</p>
+<ul>
+<li>控制平面（ Contro | Plane) ：控制平面负责管理工作节点和维护集群状态。所有任务分配都来自于控制平面。</li>
+<li>工作节点 (Worker Node) ：工作节点负责执行由控制平面分配的请求任务，运行实际的应用和工作负载。</li>
+</ul>
+<h2 id="控制平面"><a href="#控制平面" class="headerlink" title="控制平面"></a>控制平面</h2><p>控制平面组件会为集群做出全局决策，比如资源的调度、检测和响应集群事件。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/image-20231017214045625.png" alt="image-20231017214045625"></p>
+<h3 id="kube—apiserver"><a href="#kube—apiserver" class="headerlink" title="kube—apiserver"></a>kube—apiserver</h3><p>如果需要与 Kubernetes 集群进行交互，就要通过 API。</p>
+<p><code>apiserver</code> 是 Kubernetes 控制平面的前端，用于处理内部和外部请求。</p>
+<h3 id="kube—scheduler"><a href="#kube—scheduler" class="headerlink" title="kube—scheduler"></a>kube—scheduler</h3><p>集群状况是否良好？如果需要创建新的容器，要将它们放在哪里？这些是调度程序需要关注的问题。</p>
+<p><code>scheduler</code> 调度程序会考虑容器集的资源需求（例如 CPU 或内存）以及集群的运行状况。随后，它会将容器集安排到适当的计算节点。</p>
+<h3 id="kube—controller—manager"><a href="#kube—controller—manager" class="headerlink" title="kube—controller—manager"></a>kube—controller—manager</h3><p>控制器负责实际运行集群，<code>controller-manager</code> 控制器管理器则是将多个控制器功能合而为一，降低了程序的复杂性。</p>
+<p><code>controller-manager</code> 包含了这些控制器：</p>
+<ul>
+<li>节点控制器 (Node Controller) ：负责在节点出现故障时进行通知和响应</li>
+<li>任务控制器 (Job Controller) ：监测代表一次性任务的 Job 对象，然后创建 Pods 来运行这些任务直至完成</li>
+<li>端点控制器 (Endpoints Controller) ：填充端点 (Endpoints) 对象（即加入Service 与 Pod)</li>
+<li>服务帐户和令牌控制器 (Service Account &amp; Token Controllers) ：为新的命名空间创建默认帐户和 API 访问令牌</li>
+</ul>
+<h3 id="cloud—controller—manager"><a href="#cloud—controller—manager" class="headerlink" title="cloud—controller—manager"></a>cloud—controller—manager</h3><p>控制平面还包含一个可选组件 <code>cloud-cont rotler-manager</code></p>
+<p>云控制器管理器 (Cloud Controller Manager) 允许你将你的集群连接到云提供商的 API之上，并将与该云平台交互的组件同与你的集群交互的组件分离开来。</p>
+<p>如果在自己的环境中运行 Kubernetes ，或者在本地计算机中运行学习环境，所部署的集群不需要有云控制器管理器。</p>
+<h3 id="etcd"><a href="#etcd" class="headerlink" title="etcd"></a>etcd</h3><p><code>etcd</code> 是一个键值对数据库，用于存储配置数据和集群状态信息</p>
+<h2 id="Node组件"><a href="#Node组件" class="headerlink" title="Node组件"></a>Node组件</h2><p>节点组件会在每个节点上运行，负责维护运行的 Pod 并提供 Kubernetes 运行环境</p>
+<h3 id="kubelet"><a href="#kubelet" class="headerlink" title="kubelet"></a>kubelet</h3><p>kubelet 会在集群中每个<strong>节点 (node)</strong> 上运行。它保证容器 (containers) 都运行在Pod 中。当控制平面需要在节点中执行某个操作时， kubelet 就会执行该操作。</p>
+<h3 id="kube—proxy"><a href="#kube—proxy" class="headerlink" title="kube—proxy"></a>kube—proxy</h3><p>kube-proxy 是集群中每个<strong>节点 (node)</strong> 上运行的网络代理，是实现 Kubernetes <strong>服务(Service)</strong> 概念的一部分。kube-proxy 维护节点网络规则和转发流量，实现从集群内部或外部的网络与 Pod 进行网络通信。</p>
+<h3 id="容器运行时-Container-Runtime"><a href="#容器运行时-Container-Runtime" class="headerlink" title="容器运行时 (Container Runtime)"></a>容器运行时 (Container Runtime)</h3><p>容器运行环境是负责运行容器的软件。Kubernetes 支持许多容器运行环境，例如 <strong>containerd</strong> 、 docker 或者其他实现了<strong>Kubernetes CRI（容器运行环境接囗）</strong>的容器。</p>
+<h2 id="组件关系"><a href="#组件关系" class="headerlink" title="组件关系"></a>组件关系</h2><p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/image-20231017215332162.png" alt="image-20231017215332162"></p>
+<h1 id="Kubectl"><a href="#Kubectl" class="headerlink" title="Kubectl"></a>Kubectl</h1><p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/image-20231017215818271.png" alt="image-20231017215818271"></p>
+<p>kubectl 是一个kvbernetes 命令行工具。</p>
+<p>kubectl 使用 Kubernetes API 与 Kubernetes 集群的<strong>控制面</strong>进行通信，可以使用kubectl 部署应用程序、检查和管理群集资源以及查看日士</p>
+<h1 id="K3s"><a href="#K3s" class="headerlink" title="K3s"></a>K3s</h1><p>为什么使用 K3sK3s 是一个轻量级的、完全兼容的 Kubernetes 发行版本。非常适合初学者。</p>
+<p>K3s 将所有 Kubernetes 控制平面组件都封装在单个二进制文件和进程中，文件大小&lt; 100M ，占用资源更小，且包含了 kubernetes 运行所需要的部分外部依赖和本地存储提供程序。</p>
+<p>K3s 提供了离线安装包，安装起来非常方便，可以避免安装过程中遇到各种网络资源访问问题。</p>
+<p>K3s 特别适用于边缘计算、物联网、嵌入式和 ARM 移动端场景。</p>
+<blockquote>
+<p>提示：K3s 完全兼容 kubernetes ，二者的操作是一样的，使用 k3s 完全满足我们学习kubernetes 的要求，课程的最后，我们再使用 kubeadm 安装一个完整的集群。</p>
+</blockquote>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>安装需要三台虚拟机（放在同一虚拟机下也可以），分别是<code>k8s-master</code>，<code>k8s-worker1</code>，<code>k8s-worker2</code></p>
+<h3 id="在线安装"><a href="#在线安装" class="headerlink" title="在线安装"></a>在线安装</h3><p>The <code>install.sh</code> script provides a convenient way to download K3s and add a service to systemd or openrc.</p>
+<p>To install k3s as a service, run:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sfL https://get.k3s.io | sh -</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>国内镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn sh -</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>A kubeconfig file is written to <code>/etc/rancher/k3s/k3s.yaml</code> and the service is automatically started or restarted. The install script will install K3s and additional utilities, such as <code>kubectl</code>, <code>crictl</code>, <code>k3s-killall.sh</code>, and <code>k3s-uninstall.sh</code>, for example:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo kubectl get nodes</span><br></pre></td></tr></table></figure>
+
+<p><code>K3S_TOKEN</code> is created at <code>/var/lib/rancher/k3s/server/node-token</code> on your server. To install on worker nodes, pass <code>K3S_URL</code> along with <code>K3S_TOKEN</code> environment variables, for example:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=XXX sh -</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>国内镜像</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh | INSTALL_K3S_MIRROR=cn K3S_URL=https://172.17.1.158:6443 K3S_TOKEN=K108f01130e73a8c3f971ec59b90c7af8a3e6f7bec22425cc2b658d822db791e24e::server:144a10db80a6d2b877d2cf6502598ac1 sh -</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="离线安装"><a href="#离线安装" class="headerlink" title="离线安装"></a>离线安装</h3><ol>
+<li><p>下载安装包</p>
+<ul>
+<li>下载安装脚本<code>install.sh</code>：<a target="_blank" rel="noopener" href="https://get.k3s.io/">https://get.k3s.io/</a></li>
+<li>下载<code>k3s</code>二进制文件</li>
+<li>下载必要的<code>image</code></li>
+</ul>
+<blockquote>
+<p>这些文件都可以在github仓库中获取：<a target="_blank" rel="noopener" href="https://github.com/k3s-io/k3s">https://github.com/k3s-io/k3s</a></p>
+</blockquote>
+</li>
+<li><p>执行安装脚本</p>
+<ol>
+<li><p>将<code>k3s</code>二进制文件移动到<code>/usr/local/bin</code>目录，并添加执行权限</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv k3s /usr/local/bin</span><br><span class="line">chmod +x /usr/local/bin</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将镜像移动到<code>/var/lib/rancher/k3s/agent/images/</code>目录（无需解压）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /var/lib/rancher/k3s/agent/images/</span><br><span class="line">mv k3s-airgap-images-amd64.tar /var/lib/rancher/k3s/agent/images/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>在<code>k8s-master</code>节点执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">chmod +x install.sh</span><br><span class="line">INSTALL_K3S_SKIP_DOWNLOAD=true ./install.sh</span><br><span class="line">kubectl get node</span><br><span class="line">cat /var/lib/rancher/k3s/server/node-token</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在<code>k8s-worker1</code>和<code>k8s-worker2</code>节点执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSTALL_K3S_SKIP_DOWNLOAD=true \</span><br><span class="line">K3S_URL=https://k8s-master:6443 \</span><br><span class="line">K3S_TOKEN=XXX \</span><br><span class="line">./install.sh</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意使用的是https协议</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="镜像加速"><a href="#镜像加速" class="headerlink" title="镜像加速"></a>镜像加速</h2><p>由于 kubernetes 从 <code>V1.24</code> 版本开始默认使用 <code>containerd</code> ，需要修改 <code>containerd</code> 的配置文件，才能让 Pod 的镜像使用镜像加递器。配置文件路径一般为 <code>/etc/containerd/config.toml</code> ，详见阿里云镜像加速。</p>
+<h3 id="在-K3s-中配置镜像仓库"><a href="#在-K3s-中配置镜像仓库" class="headerlink" title="在 K3s 中配置镜像仓库"></a>在 K3s 中配置镜像仓库</h3><p>K3s 会自动生成 containerd 的配置文件 <code>/var/lib/rancher/k3s/agent/etc/containerd/config.toml</code>, 不要直接修改这个文件， k3s 重启后修改会丢失。为了简化配置， K3s 通过 <code>/etc/rancher/k3s/registries.yaml</code> 文件来配置镜像仓库， K3s会在启动时检查这个文件是否存在。我们需要在每个节点上新建 <code>/etc/rancher/k3s/registries.yaml</code> 文件，配置内容如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mirrors:</span></span><br><span class="line">  <span class="attr">docker.io:</span></span><br><span class="line">    <span class="attr">endpoint:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;https://[系统分配前缀].mirror.aliyuncs.com&quot;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>镜像仓库从阿里云系统上登录注册账号获得，每个账号都是独立的镜像地址</p>
+<p>网址：cr.console.aliyun.com</p>
+</blockquote>
+<p>配置后重启<code>k3s</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart k3s</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">worker节点重启k3s-agent</span></span><br><span class="line">systemctl restart k3s-agent</span><br></pre></td></tr></table></figure>
+
+<h2 id="Pod-容器集"><a href="#Pod-容器集" class="headerlink" title="Pod(容器集)"></a>Pod(容器集)</h2><p><strong>Pod</strong> 是包含一个或多个容器的容器组，是 Kubernetes 中创建和管理的最小对象。</p>
+<p>Pod 有以下特点：</p>
+<ul>
+<li>Pod是kubernetes中<strong>最小的调度单位</strong>（原子单元），Kubernetes直接管理Pod而不是容器。</li>
+<li>同一个Pod中的容器总是会被自动安排到集群中的<strong>同一节点</strong>（物理机或虚拟机）上，并且<strong>一起调度</strong>。</li>
+<li>Pod可以理解为运行特定应用的“逻辑主机”，这些容器共享存储、网络和配置声明(如资源限制)。</li>
+<li>每个 Pod 有唯一的 IP 地址。 <strong>IP地址分配给Pod</strong>，在同一个 Pod 内，所有容器共享一个 IP 地址和端口空间，Pod 内的容器可以使用<code>localhost</code>互相通信。</li>
+</ul>
+<p>例如，你可能有一个容器，为共享卷中的文件提供 Web 服务器支持，以及一个单独的 “边车 (sidercar)” 容器负责从远端更新这些文件，如下图所示：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/image-20231019205023098.png" alt="image-20231019205023098"></p>
+<h3 id="创建和管理Pod"><a href="#创建和管理Pod" class="headerlink" title="创建和管理Pod"></a>创建和管理Pod</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">kubectl run mynginx --image=nginx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看Pod</span></span><br><span class="line">kubectl get pod</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">描述</span></span><br><span class="line">kubectl describe pod mynginx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看Pod的运行日志</span></span><br><span class="line">kubectl logs mynginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">显示pod的IP和运行节点信息</span></span><br><span class="line">kubectl get pod -owide</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用Pod的ip+pod里面运行容器的端口</span></span><br><span class="line">curl 10.42.1.3</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在容器中执行</span></span><br><span class="line">kubectl exec mynginx -it -- /bin/bash</span><br><span class="line"></span><br><span class="line">kubectl get po --watch</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-it 交互模式</span> </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">--<span class="built_in">rm</span> 退出后删除容器，多用于执行一次性任务或使用客户端</span></span><br><span class="line">kubectl run mynginx --image=nginx -it --rm -- /bin/bash </span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">删除</span></span><br><span class="line">kubectl delete pod mynginx</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">强制删除</span></span><br><span class="line">kubectl delete pod mynginx --force</span><br></pre></td></tr></table></figure>
+
+<h2 id="Deployment-部署-与ReplicaSet-副本集"><a href="#Deployment-部署-与ReplicaSet-副本集" class="headerlink" title="Deployment(部署)与ReplicaSet(副本集)"></a>Deployment(部署)与ReplicaSet(副本集)</h2><p><strong>Deployment</strong>是对ReplicaSet和Pod更高级的抽象。</p>
+<p>它使Pod拥有多副本，自愈，扩缩容、滚动升级等能力。</p>
+<p><strong>ReplicaSet</strong>(副本集)是一个Pod的集合。</p>
+<p>它可以设置运行Pod的数量，确保任何时间都有指定数量的 Pod 副本在运行。</p>
+<p>通常我们不直接使用ReplicaSet，而是在Deployment中声明。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">创建deployment,部署3个运行nginx的Pod</span></span><br><span class="line">kubectl create deployment nginx-deployment --image=nginx:1.22 --replicas=3</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看deployment</span></span><br><span class="line">kubectl get deploy</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看replicaSet</span></span><br><span class="line">kubectl get rs </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除deployment</span></span><br><span class="line">kubectl delete deploy nginx-deployment</span><br></pre></td></tr></table></figure>
+
+<h3 id="缩放"><a href="#缩放" class="headerlink" title="缩放"></a>缩放</h3><ul>
+<li><p>手动缩放</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将副本数量调整为5</span></span><br><span class="line">kubectl scale deployment nginx-deployment --replicas=5</span><br><span class="line">kubectl get deploy</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自动缩放</p>
+</li>
+<li><p>自动缩放通过增加和减少副本的数量，以保持所有 Pod 的平均 CPU 利用率不超过 75%。</p>
+<p>自动伸缩需要声明Pod的资源限制，同时使用 <a target="_blank" rel="noopener" href="https://github.com/kubernetes-sigs/metrics-server#readme">Metrics Server</a> 服务（K3s默认已安装）。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">自动缩放</span></span><br><span class="line">kubectl autoscale deployment/nginx-auto --min=3 --max=10 --cpu-percent=75 </span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看自动缩放</span></span><br><span class="line">kubectl get hpa</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除自动缩放</span></span><br><span class="line">kubectl delete hpa nginx-deployment</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="滚动更新"><a href="#滚动更新" class="headerlink" title="滚动更新"></a>滚动更新</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看版本和Pod</span></span><br><span class="line">kubectl get deployment/nginx-deployment -owide</span><br><span class="line">kubectl get pods</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">更新容器镜像</span></span><br><span class="line">kubectl set image deployment/nginx-deployment nginx=nginx:1.23</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">滚动更新</span></span><br><span class="line">kubectl rollout status deployment/nginx-deployment</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看过程</span></span><br><span class="line">kubectl get rs --watch</span><br></pre></td></tr></table></figure>
+
+<h3 id="版本回滚"><a href="#版本回滚" class="headerlink" title="版本回滚"></a>版本回滚</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看历史版本</span></span><br><span class="line">kubectl rollout history deployment/nginx-deployment</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看指定版本的信息</span></span><br><span class="line">kubectl rollout history deployment/nginx-deployment --revision=2</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">回滚到历史版本</span></span><br><span class="line">kubectl rollout undo deployment/nginx-deployment --to-revision=2</span><br></pre></td></tr></table></figure>
+
+<h2 id="Service-服务"><a href="#Service-服务" class="headerlink" title="Service(服务)"></a>Service(服务)</h2><p>Service将运行在一组 <strong>Pods</strong> 上的应用程序公开为网络服务的抽象方法。</p>
+<p>Service为一组 Pod 提供相同的 DNS 名，并且在它们之间进行负载均衡。</p>
+<p>Kubernetes 为 Pod 提供分配了IP 地址，但IP地址可能会发生变化。</p>
+<p>集群内的容器可以通过service名称访问服务，而不需要担心Pod的IP发生变化。</p>
+<hr>
+<p>Kubernetes Service 定义了这样一种抽象：</p>
+<p>逻辑上的一组可以互相替换的 Pod，通常称为微服务。 </p>
+<p>Service 对应的 Pod 集合通常是通过 <strong>选择算符</strong> 来确定的。 </p>
+<p>举个例子，在一个Service中运行了3个nginx的副本。这些副本是可互换的，我们不需要关心它们调用了哪个nginx，也不需要关注 Pod的运行状态，只需要调用这个服务就可以了。</p>
+<h3 id="ServiceType-取值"><a href="#ServiceType-取值" class="headerlink" title="ServiceType 取值"></a>ServiceType 取值</h3><p>● ClusterIP：将服务公开在集群内部。kubernetes会给服务分配一个集群内部的 IP，集群内的所有主机都可以通过这个Cluster-IP访问服务。集群内部的Pod可以通过service名称访问服务。<br>● NodePort：通过每个节点的主机IP 和静态端口（NodePort）暴露服务。 集群的外部主机可以使用节点IP和NodePort访问服务。<br>● ExternalName：将集群外部的网络引入集群内部。<br>● LoadBalancer：使用云提供商的负载均衡器向外部暴露服务。 </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">port是service访问端口,target-port是Pod端口</span></span><br><span class="line">kubectl expose deployment/nginx-deployment \</span><br><span class="line">--name=nginx-service --type=ClusterIP --port=8080 --target-port=80</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">随机产生主机端口</span></span><br><span class="line">kubectl expose deployment/nginx-deployment \</span><br><span class="line">--name=nginx-service2 --type=NodePort --port=8080 --target-port=80</span><br></pre></td></tr></table></figure>
+
+<h3 id="访问Service"><a href="#访问Service" class="headerlink" title="访问Service"></a>访问Service</h3><p> 外部主机访问：</p>
+<p>1.NodePort端口是随机的，范围为:30000-32767。</p>
+<p>2.集群中每一个主机节点的NodePort端口都可以访问。</p>
+<p>3.如果需要指定端口，不想随机产生，需要使用配置文件来声明。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zishuq.github.io">zishuQ</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zishuq.github.io/article/%E6%9D%82%E7%B1%BB/k8s/">https://zishuq.github.io/article/%E6%9D%82%E7%B1%BB/k8s/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zishuq.github.io" target="_blank">zishuQ's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/k8s/">k8s</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/uncategorized/%E4%BA%A7%E5%93%81%E8%AF%B4%E6%98%8E/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info"></div></div></a></div><div class="next-post pull-right"><a href="/article/uncategorized/hello-world/" title="Hello World"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Hello World</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zishuQ</div><div class="author-info__description">用于记录学习内容的个人博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">64</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">15</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">57</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zishuQ" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zishuq77@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%91%E5%8E%9F%E7%94%9F"><span class="toc-number">1.1.</span> <span class="toc-text">云原生</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%91%E5%8E%9F%E7%94%9F%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">云原生定义</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#kubernetes-%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">kubernetes 架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E5%B9%B3%E9%9D%A2"><span class="toc-number">2.1.</span> <span class="toc-text">控制平面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#kube%E2%80%94apiserver"><span class="toc-number">2.1.1.</span> <span class="toc-text">kube—apiserver</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kube%E2%80%94scheduler"><span class="toc-number">2.1.2.</span> <span class="toc-text">kube—scheduler</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kube%E2%80%94controller%E2%80%94manager"><span class="toc-number">2.1.3.</span> <span class="toc-text">kube—controller—manager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cloud%E2%80%94controller%E2%80%94manager"><span class="toc-number">2.1.4.</span> <span class="toc-text">cloud—controller—manager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#etcd"><span class="toc-number">2.1.5.</span> <span class="toc-text">etcd</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Node%E7%BB%84%E4%BB%B6"><span class="toc-number">2.2.</span> <span class="toc-text">Node组件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#kubelet"><span class="toc-number">2.2.1.</span> <span class="toc-text">kubelet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kube%E2%80%94proxy"><span class="toc-number">2.2.2.</span> <span class="toc-text">kube—proxy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8%E8%BF%90%E8%A1%8C%E6%97%B6-Container-Runtime"><span class="toc-number">2.2.3.</span> <span class="toc-text">容器运行时 (Container Runtime)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E5%85%B3%E7%B3%BB"><span class="toc-number">2.3.</span> <span class="toc-text">组件关系</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Kubectl"><span class="toc-number">3.</span> <span class="toc-text">Kubectl</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#K3s"><span class="toc-number">4.</span> <span class="toc-text">K3s</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">4.1.</span> <span class="toc-text">安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%BA%BF%E5%AE%89%E8%A3%85"><span class="toc-number">4.1.1.</span> <span class="toc-text">在线安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85"><span class="toc-number">4.1.2.</span> <span class="toc-text">离线安装</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F"><span class="toc-number">4.2.</span> <span class="toc-text">镜像加速</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-K3s-%E4%B8%AD%E9%85%8D%E7%BD%AE%E9%95%9C%E5%83%8F%E4%BB%93%E5%BA%93"><span class="toc-number">4.2.1.</span> <span class="toc-text">在 K3s 中配置镜像仓库</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pod-%E5%AE%B9%E5%99%A8%E9%9B%86"><span class="toc-number">4.3.</span> <span class="toc-text">Pod(容器集)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%92%8C%E7%AE%A1%E7%90%86Pod"><span class="toc-number">4.3.1.</span> <span class="toc-text">创建和管理Pod</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Deployment-%E9%83%A8%E7%BD%B2-%E4%B8%8EReplicaSet-%E5%89%AF%E6%9C%AC%E9%9B%86"><span class="toc-number">4.4.</span> <span class="toc-text">Deployment(部署)与ReplicaSet(副本集)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%A9%E6%94%BE"><span class="toc-number">4.4.1.</span> <span class="toc-text">缩放</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BB%9A%E5%8A%A8%E6%9B%B4%E6%96%B0"><span class="toc-number">4.4.2.</span> <span class="toc-text">滚动更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E5%9B%9E%E6%BB%9A"><span class="toc-number">4.4.3.</span> <span class="toc-text">版本回滚</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Service-%E6%9C%8D%E5%8A%A1"><span class="toc-number">4.5.</span> <span class="toc-text">Service(服务)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ServiceType-%E5%8F%96%E5%80%BC"><span class="toc-number">4.5.1.</span> <span class="toc-text">ServiceType 取值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AEService"><span class="toc-number">4.5.2.</span> <span class="toc-text">访问Service</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/%E6%BC%94%E7%A4%BA%E8%A7%86%E9%A2%91/" title="无题">无题</a><time datetime="2023-10-25T04:05:25.530Z" title="发表于 2023-10-25 12:05:25">2023-10-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/%E4%BA%A7%E5%93%81%E8%AF%B4%E6%98%8E/" title="无题">无题</a><time datetime="2023-10-25T02:51:09.639Z" title="发表于 2023-10-25 10:51:09">2023-10-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/%E6%9D%82%E7%B1%BB/k8s/" title="k8s">k8s</a><time datetime="2023-10-17T13:24:00.000Z" title="发表于 2023-10-17 21:24:00">2023-10-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/hello-world/" title="Hello World">Hello World</a><time datetime="2023-10-15T07:44:00.000Z" title="发表于 2023-10-15 15:44:00">2023-10-15</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/%E7%AC%94%E8%AE%B0/" title="无题">无题</a><time datetime="2023-10-15T07:30:23.984Z" title="发表于 2023-10-15 15:30:23">2023-10-15</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By zishuQ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"scriptForm":"local","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
