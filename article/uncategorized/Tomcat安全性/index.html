@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>zishuQ's blog | zishuQ's blog</title><meta name="author" content="zishuQ"><meta name="copyright" content="zishuQ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="准备工作 下载tomcat二进制分发版apache-tomcat-9.0.87.tar.gz，9.0版本是tomcat的Stable版本，支持jdk1.8版本及以上运行  解压出来的文件和目录，里面的文件是对tomcat在构建、使用的一些说明。重点关注几个目录    目录 作用    bin 这个目录包含了Tomcat的可执行文件，如启动脚本、关闭脚本等。可以在这个目录中找到用于管理Tomcat服">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zishuQ&#39;s blog">
+<meta property="og:url" content="https://zishuq.github.io/article/uncategorized/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/index.html">
+<meta property="og:site_name" content="zishuQ&#39;s blog">
+<meta property="og:description" content="准备工作 下载tomcat二进制分发版apache-tomcat-9.0.87.tar.gz，9.0版本是tomcat的Stable版本，支持jdk1.8版本及以上运行  解压出来的文件和目录，里面的文件是对tomcat在构建、使用的一些说明。重点关注几个目录    目录 作用    bin 这个目录包含了Tomcat的可执行文件，如启动脚本、关闭脚本等。可以在这个目录中找到用于管理Tomcat服">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg">
+<meta property="article:published_time" content="2024-03-22T07:27:34.956Z">
+<meta property="article:modified_time" content="2024-03-24T09:14:58.570Z">
+<meta property="article:author" content="zishuQ">
+<meta property="article:tag" content="zishuQ">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="canonical" href="https://zishuq.github.io/article/uncategorized/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'zishuQ\'s blog',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-24 17:14:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">74</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">57</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302205350.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="zishuQ's blog"><img class="site-icon" src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"/><span class="site-name">zishuQ's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">无题</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-22T07:27:34.956Z" title="发表于 2024-03-22 15:27:34">2024-03-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-24T09:14:58.570Z" title="更新于 2024-03-24 17:14:58">2024-03-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><ol>
+<li><p>下载tomcat二进制分发版<code>apache-tomcat-9.0.87.tar.gz</code>，9.0版本是tomcat的<strong>Stable</strong>版本，支持<code>jdk1.8</code>版本及以上运行</p>
+</li>
+<li><p>解压出来的文件和目录，里面的文件是对tomcat在构建、使用的一些说明。重点关注几个目录<br><img src="/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/image-20240324095936867.png" alt="image-20240324095936867"></p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bin</td>
+<td>这个目录包含了Tomcat的可执行文件，如启动脚本、关闭脚本等。可以在这个目录中找到用于管理Tomcat服务器的命令行工具。</td>
+</tr>
+<tr>
+<td><strong>conf</strong></td>
+<td>这个目录包含了Tomcat的配置文件，如服务器配置、日志配置、Web应用程序配置等。可以在这个目录中修改Tomcat服务器的各种配置选项。</td>
+</tr>
+<tr>
+<td>logs</td>
+<td>这个目录通常包含Tomcat服务器生成的日志文件。可以在这个目录中查看Tomcat的运行日志、访问日志等</td>
+</tr>
+<tr>
+<td>webapps</td>
+<td>这是一个Web应用程序的目录，通常用于存放部署到Tomcat服务器上的Web应用程序。将WAR文件放入这个目录时，Tomcat会自动将其部署并运行。</td>
+</tr>
+<tr>
+<td>lib</td>
+<td>这个目录包含了Tomcat服务器运行时所需的Java类库文件。这些文件通常是Tomcat服务器的依赖库，用于支持Tomcat的运行和功能。</td>
+</tr>
+<tr>
+<td>temp</td>
+<td>这是一个临时目录，Tomcat在运行时会使用它来存放临时文件和缓存数据。</td>
+</tr>
+<tr>
+<td>work</td>
+<td>这是Tomcat服务器的工作目录，用于存放Tomcat运行时生成的临时文件和JSP编译后的Java类文件。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>在<strong>bin</strong>目录下，有启动、关闭tomcat的脚本。启动可以使用<code>startup.sh</code>或者使用<code>catalina.sh</code>传入命令，<code>startup.sh</code>本质上也是使用<code>catalina.sh</code>启动，只是更简单一些，而<code>catalina.sh</code>支持更多启动项和参数，有更多命令，是一个更底层的脚本。关闭可以使用<code>shutdown.sh</code>或者<code>catalina.sh</code>传入命令。这里我直接使用<code>startup.sh</code>启动tomcat<br><img src="/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/image-20240324120454543.png" alt="image-20240324120454543"></p>
+</li>
+</ol>
+<h1 id="安全性问题"><a href="#安全性问题" class="headerlink" title="安全性问题"></a>安全性问题</h1><h2 id="1、Tomcat启动安全配置"><a href="#1、Tomcat启动安全配置" class="headerlink" title="1、Tomcat启动安全配置"></a>1、Tomcat启动安全配置</h2><ol>
+<li><p>tomcat默认管理控制台和管理账号密码<br>避免tomcat管理控制台对外开放，完全禁用对manager应用程序的访问，删除tomcat-users.xml禁止管理控制账号。如果有需要开启manager应用程序的访问，应该限制访问的IP地址为内部可信的地址，管理控制账号应按照用户角色配置，避免不同用户间共享账号。</p>
+<p><img src="/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/image-20240324162954815.png" alt="image-20240324162954815"></p>
+<p><img src="/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/image-20240324162911443.png" alt="image-20240324162911443"></p>
+<p>在<code>conf/tomcat-users.xml</code>中配置用户名和密码</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">user</span> <span class="attr">username</span>=<span class="string">&quot;tomcat&quot;</span> <span class="attr">password</span>=<span class="string">&quot;tomcat&quot;</span> <span class="attr">roles</span>=<span class="string">&quot;admin-gui,admin-script,manager-gui,manager-script,manager-jmx,manager-status&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除tomcat不使用的样例文件和doc文件</p>
+<p>删除Tomcat运行不需要的doc文件和样例文件等文件，这些文件对tomcat运行没有作用，增加了安全风险，使用tomcat应该删除这些冗余文件。<br>删除tomcat的冗余目录及文件，例如：</p>
+<table>
+<thead>
+<tr>
+<th>目录</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tomcat&#x2F;webapp&#x2F;doc&#x2F;*</td>
+<td>该目录下是tomcat操作介绍文档</td>
+</tr>
+<tr>
+<td>tomcat&#x2F;webapp&#x2F;examples&#x2F;*</td>
+<td>该目录下是tomcat的程序样例文档</td>
+</tr>
+<tr>
+<td>tomcat&#x2F;webapp&#x2F;ROOT&#x2F;*</td>
+<td>ROOT是默认根目录，即访问 localhost:8080&#x2F;，包含有关WEB的通用访问配置等</td>
+</tr>
+</tbody></table>
+<p><img src="/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/image-20240324154222733.png" alt="image-20240324154222733"></p>
+<p>也可以使用管理界面进行删除</p>
+<p><img src="/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/image-20240324165308085.png" alt="image-20240324165308085"></p>
+</li>
+<li><p>tomcat的shutdown端口和Connector端口安全配置<br>Tomcat提供一个默认监听端口8005，通过本地TCP&#x2F;IP连接到该端口，发送shutdown请求命令，从而终止tomcat进程。如果黑客知道这个端口开启，很容易被用来关闭服务。Connector默认配置端口8080是http请求监听端口，8443默认是https请求监听端口，使用这些默认端口，很容易成为黑客的攻击对象，增加被攻击的风险。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 修改默认关闭端口 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">Server</span> <span class="attr">port</span>=<span class="string">&quot;8015&quot;</span> <span class="attr">shutdown</span>=<span class="string">&quot;SHUTDOWN&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 修改默认访问http和https端口 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">&quot;8088&quot;</span> <span class="attr">protocol</span>=<span class="string">&quot;HTTP/1.1&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">connectionTimeout</span>=<span class="string">&quot;20000&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">redirectPort</span>=<span class="string">&quot;9443&quot;</span></span></span><br><span class="line"><span class="tag">               <span class="attr">maxParameterCount</span>=<span class="string">&quot;1000&quot;</span></span></span><br><span class="line"><span class="tag">               /&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以安全管理模式运行Tomcat<br>通过-security参数启动tomcat，则tomcat以安全管理模式运行，会自动加载<code>tomcat/conf/Catalina.policy</code>安全策略文件，服务可以根据需要对tomcat应用程序读取系统环境变量和执行敏感操作等进行授权。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./bin/startup.sh -security</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h2 id="2、日志与文件目录配置操作"><a href="#2、日志与文件目录配置操作" class="headerlink" title="2、日志与文件目录配置操作"></a>2、日志与文件目录配置操作</h2><ol>
+<li><p>确保tomcat日志配置正确<br>Tomcat的AccessLogValve用于创建日志文件，格式与标准的web服务器日志文件相同，设备应配置日志功能，对用户登录进行记录，记录内容包括用户登录使用的账号，登录是否成功，登录时间，以及远程登录时，用户使用的IP地址。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Valve</span> <span class="attr">className</span>=<span class="string">&quot;org.apache.catalina.valves.AccessLogValve&quot;</span> <span class="attr">directory</span>=<span class="string">&quot;logs&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">prefix</span>=<span class="string">&quot;localhost_access_log&quot;</span> <span class="attr">suffix</span>=<span class="string">&quot;.txt&quot;</span></span></span><br><span class="line"><span class="tag">       <span class="attr">pattern</span>=<span class="string">&quot;%h %l %u %t <span class="symbol">&amp;quot;</span>%r<span class="symbol">&amp;quot;</span> %s %b&quot;</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>属性</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>className</td>
+<td>必须被设置成org.apache.catalina.valves.AccessLogValve。</td>
+</tr>
+<tr>
+<td>directory</td>
+<td>存放日志文件的目录，可以是相对路径或者绝对路径,在tomcat下面有个logs文件夹，那里面是专门放置日志文件的，也可以修改为其他路径。确保该目录及文件只能由tomcat用户读写和执行。</td>
+</tr>
+<tr>
+<td>prefix</td>
+<td>日志文件前缀。</td>
+</tr>
+<tr>
+<td>suffix</td>
+<td>日志文件后缀。</td>
+</tr>
+<tr>
+<td>pattern</td>
+<td>日志输出模式，common方式时，将记录访问源IP、本地服务器IP、记录日志服务器IP、访问方式、发送字节数、本地接收端口、访问URL地址等相关信息在日志文件中。日志记录的模式为”%h %l %u %t “%r” %s %b”，这是记录远程主机、远程用户、用户代理、请求方法、请求成功以及字节发送量等信息。</td>
+</tr>
+<tr>
+<td>fileDateFormat</td>
+<td>用来格式化日期，例如：”yyyy-MM-dd”。</td>
+</tr>
+<tr>
+<td>resolveHosts</td>
+<td>是否将IP地址解析为主机名。</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>tomcat日志配置文件处理器和日志级别<br> Tomcat的conf目录下有一个logging.properties文件用于配置日志处理器（handler）、日志打印级别和设置控制台。<code>conf/logging.properties</code>配置属性如下：</p>
+<p>handlers：定义日志处理器。</p>
+<p>org.apache.catalina.core.ContainerBase.[Catalina].[localhost].level：设置日志级别。</p>
+<p>org.apache.catalina.core.ContainerBase.[Catalina].[localhost].handlers：指定日志处理器。</p>
+<p>java.util.logging.ConsoleHandler.level：设置控制台</p>
+</li>
+</ol>
+<h2 id="3、设备其他配置操作"><a href="#3、设备其他配置操作" class="headerlink" title="3、设备其他配置操作"></a>3、设备其他配置操作</h2><ol>
+<li><p>会话管理安全配置<br>tomcat中的会话管理是Web应用程序中一个重要的部分。会话配置主要是配置会话超时时间、是否启用会话跟踪以及会话数据存储方式等。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- ==================== Default Session Configuration ================= --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- You can set the default session timeout (in minutes) for all newly   --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- created sessions by modifying the value below.                       --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">session-config</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">session-timeout</span>&gt;</span>30<span class="tag">&lt;/<span class="name">session-timeout</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">session-config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上述配置将会话超时时间设置为30分钟，一般会话超时设置该值，可以避免资源长时间占用。当会话超时后，用户的会话数据将被清除。</p>
+<p>禁用会话跟踪：</p>
+<p>在Tomcat中，会话跟踪可以通过<code>&lt;track-states&gt;</code>元素进行配置。在Web应用程序的web.xml文件中，添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">track-states</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">track-state</span> <span class="attr">private</span>=<span class="string">&quot;false&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">track-states</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>上述配置将启用会话跟踪。如果将private属性设置为true，则将会话状态信息存储在单独的会话数据文件中，以保护敏感数据。</p>
+</li>
+<li><p>配置CorsFilter限制跨域访问<br>Tomcat上配置跨域资源共享（CORS），跨域资源共享（CORS）是一种允许当前域的资源被其他域的脚本请求访问的机制，通常由于同域安全策略（the same-origin security policy），浏览器会禁止这种跨域请求。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.apache.catalina.filters.CorsFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在<code>&lt;filter-mapping&gt;</code>标签中，将<code>&lt;filter-name&gt;</code>与想要进行CORS配置的URL模式进行映射。例如，如果希望所有请求都受到CORS过滤，可以添加以下内容：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>CorsFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果只想为特定的URL模式添加CORS支持，可以更改<code>&lt;url-pattern&gt;</code>的值为想要的URL模式。在<code>&lt;filter&gt;</code>标签中添加以下属性，这些属性定义了CORS的配置选项：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.origins<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>*<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.methods<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>GET,POST,PUT,DELETE,OPTIONS<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.allowed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.exposed.headers<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>Access-Control-Allow-Origin,Access-Control-Allow-Credentials<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>cors.support.credentials<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置错误页面重定向<br>Tomcat错误页面重定向，默认错误页面会泄露服务器相关信息，增加被攻击的风险。<br><img src="/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/image-20240324171031614.png"></p>
+</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/image-20240324171118573.png" alt="image-20240324171118573"></p>
+<p>将报错的路径换成普通的页面，防止泄露报错信息</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zishuq.github.io">zishuQ</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zishuq.github.io/article/uncategorized/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/">https://zishuq.github.io/article/uncategorized/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zishuq.github.io" target="_blank">zishuQ's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/article/%E6%9D%82%E7%B1%BB/Linux/Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" title="Nginx反向代理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Nginx反向代理</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zishuQ</div><div class="author-info__description">用于记录学习内容的个人博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">74</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">57</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zishuQ" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zishuq77@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">安全性问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81Tomcat%E5%90%AF%E5%8A%A8%E5%AE%89%E5%85%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">2.1.</span> <span class="toc-text">1、Tomcat启动安全配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E6%97%A5%E5%BF%97%E4%B8%8E%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E9%85%8D%E7%BD%AE%E6%93%8D%E4%BD%9C"><span class="toc-number">2.2.</span> <span class="toc-text">2、日志与文件目录配置操作</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E8%AE%BE%E5%A4%87%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E6%93%8D%E4%BD%9C"><span class="toc-number">2.3.</span> <span class="toc-text">3、设备其他配置操作</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/" title="无题">无题</a><time datetime="2024-03-22T07:27:34.956Z" title="发表于 2024-03-22 15:27:34">2024-03-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/%E6%9D%82%E7%B1%BB/Linux/Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" title="Nginx反向代理">Nginx反向代理</a><time datetime="2024-03-22T02:27:57.000Z" title="发表于 2024-03-22 10:27:57">2024-03-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/web%E5%AE%89%E5%85%A8/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/" title="MySQL安全性">MySQL安全性</a><time datetime="2024-03-18T12:46:00.000Z" title="发表于 2024-03-18 20:46:00">2024-03-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="无题">无题</a><time datetime="2024-03-10T12:16:50.409Z" title="发表于 2024-03-10 20:16:50">2024-03-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/" title="无题">无题</a><time datetime="2024-03-10T06:58:00.646Z" title="发表于 2024-03-10 14:58:00">2024-03-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By zishuQ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"scriptForm":"local","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>

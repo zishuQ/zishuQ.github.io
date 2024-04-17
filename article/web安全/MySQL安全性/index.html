@@ -1,0 +1,270 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>MySQL安全性 | zishuQ's blog</title><meta name="author" content="zishuQ"><meta name="copyright" content="zishuQ"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="准备工作创建MySQL服务123456789101112131415161718192021version: &amp;#x27;3.1&amp;#x27;services:  db:    image: mysql:8.0    environment:      MYSQL_ROOT_PASSWORD: root    ports:      - 3306:3306    volumes:      - my">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL安全性">
+<meta property="og:url" content="https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/index.html">
+<meta property="og:site_name" content="zishuQ&#39;s blog">
+<meta property="og:description" content="准备工作创建MySQL服务123456789101112131415161718192021version: &amp;#x27;3.1&amp;#x27;services:  db:    image: mysql:8.0    environment:      MYSQL_ROOT_PASSWORD: root    ports:      - 3306:3306    volumes:      - my">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg">
+<meta property="article:published_time" content="2024-03-18T12:46:00.000Z">
+<meta property="article:modified_time" content="2024-03-19T08:06:11.775Z">
+<meta property="article:author" content="zishuQ">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"><link rel="canonical" href="https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MySQL安全性',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-19 16:06:11'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">74</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">57</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302205350.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="zishuQ's blog"><img class="site-icon" src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg"/><span class="site-name">zishuQ's blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> Movie</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">MySQL安全性</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-18T12:46:00.000Z" title="发表于 2024-03-18 20:46:00">2024-03-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-19T08:06:11.775Z" title="更新于 2024-03-19 16:06:11">2024-03-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="MySQL安全性"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="创建MySQL服务"><a href="#创建MySQL服务" class="headerlink" title="创建MySQL服务"></a>创建MySQL服务</h2><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&#x27;3.1&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">db:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:8.0</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="attr">MYSQL_ROOT_PASSWORD:</span> <span class="string">root</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">3306</span><span class="string">:3306</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql80-data:/var/lib/mysql</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">phpmyadmin:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">phpmyadmin</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">8080</span><span class="string">:80</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">PMA_ARBITRARY=1</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">mysql80-data:</span></span><br></pre></td></tr></table></figure>
+
+<p>使用<code>docker compose</code>创建一个<code>8.0.36</code>版本的<code>mysql</code>容器，并使用<code>phpmyadmin</code>作为<code>mysql</code>的管理工具。</p>
+<h1 id="安全性问题"><a href="#安全性问题" class="headerlink" title="安全性问题"></a>安全性问题</h1><h2 id="1、默认账户和密码"><a href="#1、默认账户和密码" class="headerlink" title="1、默认账户和密码"></a>1、默认账户和密码</h2><p>在安装MySQL时，默认的root账户可能存在空密码或者使用弱密码，这会增加数据库受到攻击的风险。建议在安装后立即更改默认账户的密码。</p>
+<ul>
+<li><p>使用docker创建mysql容器时候可以传入环境变量<code>MYSQL_ROOT_PASSWORD</code>完成初始化操作。</p>
+</li>
+<li><p>使用apt等工具包安装，需要根据以下命令修改密码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sudo mysql # 使用root用户登录，此时密码为空</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">5.7版本</span></span><br><span class="line">UPDATE user SET password=password(&#x27;root&#x27;) WHERE user=&#x27;root&#x27;;</span><br><span class="line">flush privileges;</span><br><span class="line"></span><br><span class="line">ALTER USER &#x27;root&#x27;@&#x27;localhost&#x27; IDENTIFIED WITH mysql_native_password BY &#x27;root&#x27;;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">8.0版本 不再支持函数password(<span class="string">&#x27;password&#x27;</span>)，使用以下方法</span></span><br><span class="line">ALTER USER &#x27;root&#x27;@&#x27;localhost&#x27; IDENTIFIED BY &#x27;root&#x27;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="2、未更新的软件版本"><a href="#2、未更新的软件版本" class="headerlink" title="2、未更新的软件版本"></a>2、未更新的软件版本</h2><p>使用旧版本的MySQL可能存在已知的安全漏洞，攻击者可以利用这些漏洞进行攻击。定期更新MySQL软件以修复已知漏洞是至关重要的。</p>
+<p><img src="https://ucc.alicdn.com/images/user-upload-01/img_convert/b6dd4eb0535924372ad41c912b3b9c2f.png" alt="img"></p>
+<ul>
+<li>根据调查数据，mysql 5.7版本是使用量最多的一个版本。但5.7版本生命周期已在2023年10月结束，往后将不再有新的补丁发布，安全性成为严重问题，需要使用或者迁移到8.0版本。</li>
+</ul>
+<h2 id="3、网络安全"><a href="#3、网络安全" class="headerlink" title="3、网络安全"></a>3、网络安全</h2><p>MySQL默认情况下可能会在所有网络接口上监听，这可能使数据库受到未经授权的访问和攻击。应该配置MySQL只在必要的网络接口上监听，并使用防火墙规则限制对MySQL端口的访问。</p>
+<ol>
+<li><p>基于用户权限</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">&#x27;test&#x27;</span>@<span class="string">&#x27;192.168.1.%&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;password&#x27;</span>;	# 创建一个新的用户</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> PRIVILEGES <span class="keyword">ON</span> database.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;test&#x27;</span>@<span class="string">&#x27;192.168.1.%&#x27;</span>;	# 授予相应权限</span><br><span class="line">FLUSH PRIVILEGES;	# 刷新权限</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>基于配置文件<br>打开mysql的配置文件<code>my.cnf</code>进行调整，位于<code>/etc/mysql/my.cnf</code>或<code>/etc/my.cnf</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">bind-address = 192.168.1.0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改默认端口<br>修改mysql的默认端口3306，例如在docker中就可以通过修改yml文件配置进行修改</p>
+</li>
+</ol>
+<h2 id="4、权限控制不当"><a href="#4、权限控制不当" class="headerlink" title="4、权限控制不当"></a>4、权限控制不当</h2><p>如果MySQL的用户权限设置不当，可能会导致未经授权的用户访问数据库或执行敏感操作。建议严格限制用户的权限，仅授予他们所需的最低权限。</p>
+<ul>
+<li><p>授予用户所需的最低权限。例如，用户只需要读取数据库，就只授予SELECT权限，而不授予其他权限。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GRANT</span> <span class="keyword">SELECT</span> <span class="keyword">ON</span> database.<span class="operator">*</span> <span class="keyword">TO</span> <span class="string">&#x27;username&#x27;</span>@<span class="string">&#x27;hostname&#x27;</span>;</span><br><span class="line">FLUSH PRIVILEGES;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定期审查用户权限，并根据需要进行调整或撤销不再需要的权限。</p>
+</li>
+</ul>
+<h2 id="5、数据传输加密"><a href="#5、数据传输加密" class="headerlink" title="5、数据传输加密"></a>5、数据传输加密</h2><p>未加密的数据传输可能会被窃听和篡改，因此建议在MySQL客户端和服务器之间启用SSL&#x2F;TLS加密，以保护数据的机密性和完整性。</p>
+<ul>
+<li><p>在MySQL服务器和客户端之间启用SSL&#x2F;TLS加密，以保护数据的传输安全。需要在MySQL配置文件中启用SSL，并配置SSL证书。</p>
+</li>
+<li><p>查看是否支持SSL</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> VARIABLES <span class="keyword">LIKE</span> <span class="string">&#x27;have_ssl&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/image-20240319033918758.png" alt="image-20240319033918758"></p>
+</li>
+</ul>
+<ol>
+<li><p>自己签名证书</p>
+<ul>
+<li><p>创建CA私钥和证书</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openssl genrsa 2048 &gt; ca-key.pem	# 创建证书</span><br><span class="line">openssl req -sha1 -new -x509 -nodes -days 3650 -key ca-key.pem &gt; ca-cert.pem	# 创建证书</span><br></pre></td></tr></table></figure>
+
+<p><img src="/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/image-20240319034150300.png" alt="image-20240319034150300"></p>
+</li>
+<li><p>创建服务器端的 RSA 私钥和数字证书</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">openssl req -sha1 -newkey rsa:2048 -days 3650 -nodes -keyout server-key.pem &gt; server-req.pem	# 创建服务器端的私钥和一个证书请求文件</span><br><span class="line">openssl rsa -in server-key.pem -out server-key.pem	# 将生成的私钥转换为 RSA 私钥文件格式</span><br><span class="line">openssl x509 -sha1 -req -in server-req.pem -days 3650 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 &gt; server-cert.pem	# 使用原先生成的 CA 证书来生成一个服务器端的数字证书</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建客户端的 RSA 私钥和数字证书</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">openssl req -sha1 -newkey rsa:2048 -days 3650 -nodes -keyout client-key.pem &gt; client-req.pem</span><br><span class="line">openssl rsa -in client-key.pem -out client-key.pem</span><br><span class="line">openssl x509 -sha1 -req -in client-req.pem -days 3650 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 &gt; client-cert.pem</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>使用工具创建证书与私钥</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_ssl_rsa_setup --datadir ./</span><br></pre></td></tr></table></figure>
+
+<p><img src="/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/image-20240319034557451.png" alt="image-20240319034557451"></p>
+</li>
+</ol>
+<ul>
+<li>服务端配置<code>my.cnf</code>，再将生成的证书放到指定位置后重启服务<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">ssl-ca=/etc/mysql/ca-cert.pem</span><br><span class="line">ssl-cert=/etc/mysql/server-cert.pem</span><br><span class="line">ssl-key=/etc/mysql/server-key.pem</span><br></pre></td></tr></table></figure>
+
+再使用以下命令来检查是否配置成功<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> variables <span class="keyword">like</span> <span class="string">&#x27;%ssl%&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<img src="/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/image-20240319034849357.png" alt="image-20240319034849357"></li>
+</ul>
+<h2 id="6、数据备份和恢复"><a href="#6、数据备份和恢复" class="headerlink" title="6、数据备份和恢复"></a>6、数据备份和恢复</h2><p>不恰当的备份和恢复策略可能导致数据泄露或数据丢失。应该定期备份数据库，并确保备份数据的安全存储和恢复过程的有效性。</p>
+<ul>
+<li><p>定期备份MySQL数据库，并将备份数据存储在安全的位置，远离未经授权访问。</p>
+</li>
+<li><p>可以使用MySQL提供的内置工具mysqldump进行数据库备份，并结合cron来定期执行备份任务。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#！/bin/bash</span></span><br><span class="line">BACKUP=/etc/backup/db</span><br><span class="line">DATETIME=$(<span class="built_in">date</span> +%Y_%m_%d_%H%M%S)</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;==========开始备份===========&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;备份的路径是 <span class="variable">$BACKUP</span>/<span class="variable">$DATETIME</span>.tar.gz&quot;</span></span><br><span class="line">HOST=localhost</span><br><span class="line">DB_USER=root</span><br><span class="line">DB_PWD=root</span><br><span class="line">DATABASE=db</span><br><span class="line">[ ! -d <span class="string">&quot;<span class="variable">$BACKUP</span>/<span class="variable">$DATETIME</span>&quot;</span>  ]  &amp;&amp; <span class="built_in">mkdir</span> -p <span class="string">&quot;<span class="variable">$BACKUP</span>/<span class="variable">$DATETIME</span>&quot;</span> </span><br><span class="line">mysqldump -u<span class="variable">$&#123;DB_USER&#125;</span> -p<span class="variable">$&#123;DB_PWD&#125;</span> --host=<span class="variable">$HOST</span>  <span class="variable">$DATABASE</span> | gzip  &gt; <span class="variable">$BACKUP</span>/<span class="variable">$DATETIME</span>/<span class="variable">$DATETIME</span>.sql.gz</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$BACKUP</span></span><br><span class="line">tar -zcvf  <span class="variable">$DATETIME</span>.tar.gz  <span class="variable">$DATETIME</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;==========备份完成===========&quot;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将脚本加入crontab中定时执行</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">0 0 * * * /home/zishu/utils/backup.sh	# 每天0点0分执行脚本</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="7、审计和监控"><a href="#7、审计和监控" class="headerlink" title="7、审计和监控"></a>7、审计和监控</h2><p>缺乏对数据库活动的审计和监控可能导致对数据库安全事件的忽视。建议实施审计和监控措施，及时发现并应对潜在的安全问题。</p>
+<ul>
+<li>MySQL的日志文件通常包括错误日志、查询日志等。<ol>
+<li>爆破攻击排查：通过查询日志可以查看到用户尝试连接数据库的信息，倘若存在短时间内出现大量尝试连接数据库的日志信息来判断数据库是否遭受爆破攻击。<ul>
+<li>可以通过配置mysql<strong>连接控制插件</strong>，密码错误N次会禁止登录</li>
+</ul>
+</li>
+<li>Webshell写入检查<ul>
+<li>日志写入：攻击者通过修改数据库查询日志的存储路径达到获取Webshell目的。<ol>
+<li>判断查询日志的存储路径配置的函数“general_log_file”的值指向来是否被修改。</li>
+<li>再通过分析查询日志中是否存在攻击者的攻击信息。</li>
+</ol>
+</li>
+<li>函数写入：攻击者通过数据库的文件操作函数“into outfile”或“into dumpfile”达到获取Webshell目的。<ol>
+<li>判断“secure_file_priv”函数的值来判断是否具备读写文件权限，当value值为空时即不对读写文件进行限制。</li>
+<li>再通过分析查询日志中是否存在攻击者的攻击信息。</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://zishuq.github.io">zishuQ</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/">https://zishuq.github.io/article/web%E5%AE%89%E5%85%A8/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://zishuq.github.io" target="_blank">zishuQ's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/article/%E6%9D%82%E7%B1%BB/Linux/Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" title="Nginx反向代理"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Nginx反向代理</div></div></a></div><div class="next-post pull-right"><a href="/article/uncategorized/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title=""><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info"></div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/zishuQ/PicGo/img/202306302200952.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">zishuQ</div><div class="author-info__description">用于记录学习内容的个人博客</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">74</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">57</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/zishuQ" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zishuq77@foxmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%9B%E5%BB%BAMySQL%E6%9C%8D%E5%8A%A1"><span class="toc-number">1.1.</span> <span class="toc-text">创建MySQL服务</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7%E9%97%AE%E9%A2%98"><span class="toc-number">2.</span> <span class="toc-text">安全性问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1%E3%80%81%E9%BB%98%E8%AE%A4%E8%B4%A6%E6%88%B7%E5%92%8C%E5%AF%86%E7%A0%81"><span class="toc-number">2.1.</span> <span class="toc-text">1、默认账户和密码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E3%80%81%E6%9C%AA%E6%9B%B4%E6%96%B0%E7%9A%84%E8%BD%AF%E4%BB%B6%E7%89%88%E6%9C%AC"><span class="toc-number">2.2.</span> <span class="toc-text">2、未更新的软件版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3%E3%80%81%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8"><span class="toc-number">2.3.</span> <span class="toc-text">3、网络安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4%E3%80%81%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6%E4%B8%8D%E5%BD%93"><span class="toc-number">2.4.</span> <span class="toc-text">4、权限控制不当</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5%E3%80%81%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E5%8A%A0%E5%AF%86"><span class="toc-number">2.5.</span> <span class="toc-text">5、数据传输加密</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6%E3%80%81%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="toc-number">2.6.</span> <span class="toc-text">6、数据备份和恢复</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7%E3%80%81%E5%AE%A1%E8%AE%A1%E5%92%8C%E7%9B%91%E6%8E%A7"><span class="toc-number">2.7.</span> <span class="toc-text">7、审计和监控</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/Tomcat%E5%AE%89%E5%85%A8%E6%80%A7/" title="无题">无题</a><time datetime="2024-03-22T07:27:34.956Z" title="发表于 2024-03-22 15:27:34">2024-03-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/%E6%9D%82%E7%B1%BB/Linux/Nginx%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86/" title="Nginx反向代理">Nginx反向代理</a><time datetime="2024-03-22T02:27:57.000Z" title="发表于 2024-03-22 10:27:57">2024-03-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/web%E5%AE%89%E5%85%A8/MySQL%E5%AE%89%E5%85%A8%E6%80%A7/" title="MySQL安全性">MySQL安全性</a><time datetime="2024-03-18T12:46:00.000Z" title="发表于 2024-03-18 20:46:00">2024-03-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="无题">无题</a><time datetime="2024-03-10T12:16:50.409Z" title="发表于 2024-03-10 20:16:50">2024-03-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/article/uncategorized/%E5%9F%BA%E7%A1%80%E4%BD%BF%E7%94%A8/" title="无题">无题</a><time datetime="2024-03-10T06:58:00.646Z" title="发表于 2024-03-10 14:58:00">2024-03-10</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By zishuQ</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="fas fa-sms"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><canvas class="fireworks" mobile="false"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="false"></script><script id="click-show-text" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-show-text.min.js" data-mobile="false" data-text="I,LOVE,YOU" data-fontsize="15px" data-random="false" async="async"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"scriptForm":"local","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/"});</script></body></html>
